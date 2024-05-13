@@ -1,0 +1,165 @@
+td {
+  border-bottom: 1px solid #eee;
+  height: 60px;
+  vertical-align: top;
+}
+
+tr:first-child td {
+  border-top: 1px solid #eee;
+}
+
+tr.selected td,
+tr:hover td {
+  background-color: var(--comparator-custom-func-100);
+  color: #000;
+}
+
+td.function-info {
+  padding: 6px 4px 2px 8px;
+}
+
+td.results-chart {
+  padding-top: 2px;
+  width: 132px;
+}
+
+td.edit-remove-icons {
+  width: 20px;
+  vertical-align: middle;
+}
+
+.function-name {
+  padding: 3px 0;
+}
+
+.function-type {
+  color: var(--comparator-grey-450);
+  font-size: 10px;
+}
+
+.icon {
+  color: var(--comparator-grey-300);
+  margin: 2px 0;
+  font-size: 12px;
+}
+
+.icon.disabled {
+  visibility: hidden;
+}
+
+line.axis {
+  fill: none;
+  stroke: #ccc;
+  stroke-width: 1;
+}
+
+.custom-func-results-bar {
+  cursor: pointer;
+  fill: #f3f3f3;
+  stroke-width: 0;
+}
+
+.custom-func-results-bar.value-no.selected,
+.custom-func-results-bar.value-no:hover {
+  fill: #e7e7e7;
+}
+
+.model-a {
+  fill: var(--comparator-model-a);
+}
+
+.model-b {
+  fill: var(--comparator-model-b);
+}
+
+.custom-func-results-mean {
+  stroke-width: 0;
+}
+
+.histogram-bar {
+  fill-opacity: 0.75;
+}
+
+.model-label {
+  alignment-baseline: hanging;
+  fill: var(--comparator-grey-500);
+  font-size: 11px;
+  text-anchor: middle;
+}
+
+.number-label {
+  fill: var(--comparator-grey-500);
+  font-size: 11px;
+  text-anchor: middle;
+}
+
+.number-label-description {
+  fill: #bbb;
+  font-size: 7px;
+  text-anchor: end;
+}
+
+.edit-custom-function {
+  background-color: var(--comparator-grey-100);
+  display: flex;
+  flex-direction: column;
+  margin-top: 5px;
+  padding: 5px 10px;
+}
+
+.edit-custom-function-title {
+  display: flex;
+  font-size: 13px;
+  justify-content: space-between;
+  padding: 4px 0;
+}
+
+.edit-custom-function-form {
+  display: flex;
+  flex-direction: column;
+  margin-top: 4px;
+}
+
+.field-row {
+  display: flex;
+  gap: 4px;
+  margin: 2px 0;
+}
+
+.field-row .field-row-label {
+  font-weight: 500;
+  padding: 4px 0;
+  width: 45px;
+}
+
+.field-row .field-row-content {
+  align-items: center;
+  display: flex;
+  gap: 8px;
+}
+
+.edit-custom-function .func-name-input {
+  border: 1px solid var(--comparator-grey-300);
+  font-family: monospace;
+  padding: 4px 8px;
+  width: 220px;
+}
+
+.edit-custom-function textarea {
+  border: 1px solid var(--comparator-grey-300);
+  margin-top: 4px;
+  padding: 4px 6px;
+  width: 220px;
+}
+
+.run-button {
+  align-self: end;
+  background-color: var(--comparator-custom-func-200);
+  border: 0;
+  border-radius: 12px;
+  color: var(--comparator-custom-func-800);
+  cursor: pointer;
+  margin-top: 8px;
+  padding: 6px 0;
+  width: 80px;
+}

@@ -1,0 +1,146 @@
+th.score-avg {
+  width: 98px;  /* width sum for score-avg-number and score-avg-chart */
+}
+
+td.tag-and-count {
+  align-items: center;
+  display: flex;
+  white-space: nowrap;
+}
+
+td.tag-and-count .tag {
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+}
+
+small {
+  color: var(--comparator-grey-300);
+  font-size: 9px;
+  min-width: 15px;
+  padding-left: 2px;
+}
+
+.number,
+small .number {
+  color: var(--comparator-grey-500);
+  font-family: Roboto;
+  font-size: 11px;
+}
+
+.number span {
+  border-radius: 2px;
+  padding: 0 1px;
+}
+
+.score-avg-container,
+.win-rate-container {
+  align-items: center;
+  display: flex;
+  gap: 2px;
+  justify-content: center;
+}
+
+.score-avg-container .number,
+.win-rate-container .number {
+  text-align: right;
+  width: 36px;
+}
+
+.score-avg-chart {
+  font-size: 0;
+  width: 62px;  /* distributionAreaWidth + 2px padding */
+}
+
+svg {
+  background-color: var(--comparator-grey-100);
+}
+
+.win-rate-chart {
+  font-family: Roboto;
+  width: 62px;  /* barAreaWidth + 2px padding */
+}
+
+td.score-avg,
+td.win-rate-percentage {
+  text-align: right;
+}
+
+.win-rate-chart svg {
+  display: block;
+}
+
+.win-rate-chart text {
+  fill: var(--comparator-grey-100);
+  font-size: 11px;
+}
+
+.win-rate-vertical {
+  fill: none;
+  stroke: var(--comparator-grey-600);
+  stroke-width: 2;
+}
+
+.win-rate-point {
+  fill: var(--comparator-grey-600);
+  stroke-width: 0;
+}
+
+.win-rate-confidence-interval {
+  fill: none;
+  stroke: var(--comparator-grey-600);
+  stroke-width: 1;
+}
+
+rect.bar {
+  fill-opacity: 0.75;
+}
+
+tr.selected rect.bar {
+  fill-opacity: 1.0;
+}
+
+rect.bar.win-rate-result-a {
+  fill: var(--comparator-model-a-win);
+}
+
+rect.bar.win-rate-result-b {
+  fill: var(--comparator-model-b-win);
+}
+
+rect.bar.win-rate-result-tie {
+  fill: var(--comparator-grey-400);
+}
+
+.collapsed {
+  max-height: 220px;
+  overflow-y: hidden;
+}
+
+line.middle-point-vertical {
+  fill: none;
+  stroke: var(--comparator-grey-300);
+  stroke-width: 1;
+}
+
+line.error-bar {
+  fill: none;
+  stroke: var(--comparator-grey-600);
+  stroke-width: 1;
+}
+
+line.error-bar.a-win-color,
+line.win-rate-confidence-interval.a-win-color {
+  fill: none;
+  stroke: var(--comparator-model-a-win);
+}
+
+line.error-bar.b-win-color,
+line.win-rate-confidence-interval.b-win-color {
+  fill: none;
+  stroke: var(--comparator-model-b-win);
+}
+
+circle {
+  fill: var(--comparator-grey-600);
+  stroke-width: 0;
+}

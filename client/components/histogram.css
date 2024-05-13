@@ -1,0 +1,89 @@
+.histogram {
+  display: block;
+  margin: 0 auto;
+}
+
+text {
+  fill: var(--comparator-grey-500);
+  font-size: 10px;
+  text-anchor: middle;
+}
+
+text.left-aligned {
+  text-anchor: start;
+}
+
+text.right-aligned {
+  text-anchor: end;
+}
+
+.histogram .axis {
+  fill: none;
+  stroke: var(--comparator-grey-400);
+  stroke-width: 1;
+}
+
+.histogram .axis-label {
+  alignment-baseline: hanging;
+  fill: var(--comparator-grey-400);
+  font-size: 9px;
+}
+
+.axis-end-label-bg {
+  fill-opacity: 0.8;
+}
+
+.axis-end-desc {
+  alignment-baseline: hanging;
+  fill: white;
+  font-size: 10px;
+}
+
+line.mean-rule {
+  fill: none;
+  stroke: var(--comparator-greygreen-700);
+  stroke-width: 2;
+}
+
+text.mean-rule-label {
+  alignment-baseline: hanging;
+  fill: var(--comparator-greygreen-700);
+  font-size: 9px;
+  text-anchor: start;
+  visibility: hidden;
+}
+
+text.mean-rule-label.shown {
+  visibility: visible;
+}
+
+.chart-title {
+  alignment-baseline: middle;
+  fill: var(--comparator-grey-500);
+  text-anchor: end;
+}
+
+.histogram-bar-clip-area {
+  fill: var(--comparator-grey-450);
+}
+
+rect.clickable-transparent-area {
+  opacity: 0.25;
+}
+
+rect.clickable-transparent-area.some-selected {
+  opacity: 0.8;
+}
+
+rect.clickable-transparent-area.selected {
+  opacity: 0.15;
+}
+
+rect.clickable-transparent-area.some-selected:hover {
+  opacity: 0.6;
+}
+
+rect.clickable-transparent-area:hover,
+rect.clickable-transparent-area.selected:hover {
+  opacity: 0.05;
+}

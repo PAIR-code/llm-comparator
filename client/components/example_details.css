@@ -1,0 +1,129 @@
+.panel-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding-left: 15px;
+}
+
+.panel-header {
+  align-items: center;
+  border-bottom: 1px solid var(--comparator-grey-200);
+  display: flex;
+  height: 34px;
+  justify-content: space-between;
+}
+
+.panel-title {
+  align-items: center;
+  display: flex;
+  gap: 10px;
+}
+
+.panel-title h3 {
+  font-size: 16px;
+  font-weight: 200;
+}
+
+.filter-chips {
+  display: flex;
+  gap: 2px;
+}
+
+.panel-contents {
+  display: flex;
+  gap: 10px;
+  height: calc(100% - 35px);
+}
+
+.score-distribution-chart {
+  display: flex;
+  padding: 5px 10px;
+}
+
+.rating-table {
+  overflow-y: scroll;
+}
+
+thead {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+th {
+  background-color: var(--comparator-grey-200);
+  color: var(--comparator-grey-800);
+  font-weight: normal;
+  padding: 6px 4px;
+  position: relative;
+  vertical-align: top;
+}
+
+td {
+  border-bottom: 1px solid #ddd;
+  line-height: 13px;
+  padding: 6px 8px;
+  vertical-align: top;
+}
+
+th.index {
+  width: 25px;
+}
+
+th.score {
+  width: 55px;
+}
+
+th.flipped {
+  width: 45px;
+}
+
+th.rationale {
+  min-width: 300px;
+}
+
+tr.second-row th {
+  color: white;
+  padding: 0 4px 2px;
+}
+
+td.center-aligned {
+  text-align: center;
+}
+
+td.highlighted {
+  font-weight: 600;
+}
+
+td.a-win {
+  background-color: var(--comparator-model-a-win-bg);
+}
+
+td.b-win {
+  background-color: var(--comparator-model-b-win-bg);
+}
+
+td.rationale {
+  overflow-wrap: anywhere;
+  white-space: break-spaces;
+}
+
+.sort-icon {
+  color: var(--comparator-grey-100);
+}
+
+.sort-icon.up {
+  top: -12px;
+}
+
+.sort-icon.down {
+  top: -2px;
+}
+
+.sort-icon:hover {
+  color: var(--comparator-grey-300);
+}
+
+.sort-icon.active {
+  color: var(--comparator-grey-500);
+}

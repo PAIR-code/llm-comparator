@@ -1,0 +1,39 @@
+{
+  "metadata": {
+    "source_path": "n/a: synthetic data for LLM Comparator demo",
+    "custom_fields_schema": []
+  },
+  "models": [
+    {"name": "ABC 1.1"},
+    {"name": "ABC 1.0"}
+  ],
+  "examples": [
+    {
+      "input_text": "Which city should I visit in South Korea?",
+      "tags": ["Travel"],
+      "output_text_a": "You can visit Seoul, the capital of South Korea.",
+      "output_text_b": "You can visit Seoul, Busan, and Jeju.",
+      "score": 0.5,
+      "individual_rater_scores": [],
+      "custom_fields": {}
+	},
+    {
+      "input_text": "How to draw bar charts using Python?",
+      "tags": ["Coding"],
+      "output_text_a": "I don't know it.",
+      "output_text_b": "You can use some data visualization libraries.",
+      "score": -1.0,
+      "individual_rater_scores": [],
+      "custom_fields": {}
+    },
+    {
+      "input_text": "Hi, how are you?",
+      "tags": [],
+      "output_text_a": "Good, how are you?",
+      "output_text_b": "Hi, how are you?",
+      "score": 0.0,
+      "individual_rater_scores": [],
+      "custom_fields": {}
+    }
+  ]
+}

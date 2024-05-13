@@ -1,0 +1,48 @@
+#settings-panel {
+  background-color: var(--comparator-greygreen-100);
+  border-right: 2px solid var(--comparator-greygreen-200);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow-y: auto;
+  padding: 0 10px 0 20px;
+  width: 184px;
+}
+
+.panel-title {
+  align-items: center;
+  display: flex;
+  font-size: 16px;
+  justify-content: space-between;
+  margin: 30px 0 20px;
+}
+
+.section-title {
+  margin-top: 20px;
+  font-size: 13px;
+  padding: 5px 0;
+}
+
+.settings-row {
+  display: flex;
+  gap: 5px;
+  padding: 10px 0;
+}
+
+mwc-switch {
+  --mdc-switch-selected-handle-color: var(--comparator-greygreen-700);
+  --mdc-switch-selected-track-color: var(--comparator-greygreen-300);
+  --mdc-switch-selected-hover-handle-color: var(--comparator-greygreen-700);
+  --mdc-switch-selected-hover-track-color: var(--comparator-greygreen-300);
+  --mdc-switch-selected-focus-handle-color: var(--comparator-greygreen-700);
+  --mdc-switch-selected-focus-track-color: var(--comparator-greygreen-300);
+  --mdc-switch-selected-pressed-handle-color: var(--comparator-greygreen-700);
+  --mdc-switch-selected-pressed-track-color: var(--comparator-greygreen-300);
+  /* Hide the ripple effect. */
+  --mdc-switch-selected-focus-state-layer-opacity: 0;
+  --mdc-switch-selected-hover-state-layer-opacity: 0;
+  --mdc-switch-selected-pressed-state-layer-opacity: 0;
+  --mdc-switch-unselected-focus-state-layer-opacity: 0;
+  --mdc-switch-unselected-hover-state-layer-opacity: 0;
+  --mdc-switch-unselected-pressed-state-layer-opacity: 0;
+}

@@ -1,0 +1,40 @@
+#toolbar {
+  align-items: center;
+  background-color: var(--comparator-green-200);
+  border-radius: 20px;
+  display: flex;
+  height: 18px;
+  justify-content: space-between;
+  margin: 7px 16px 8px 15px;
+  overflow-x: clip;
+  padding: 6px 12px 4px;
+}
+
+.toolbar-item {
+  align-items: center;
+  display: flex;
+  flex: 0 0 auto;
+  margin: 0 15px;
+}
+
+.toolbar-item input {
+  margin-bottom: 0;
+  margin-top: 0;
+}
+
+.toolbar-item.example-count {
+  text-align: right;  /* to make "(N total)" stay in the same pos */
+  width: 240px;  /* space for four-digit counts */
+}
+
+.toolbar-item.example-count span {
+  margin-left: auto;
+}
+
+.toolbar-item.filters {
+  margin-right: auto;
+}
+
+.toolbar-item label {
+  margin-right: 3px;
+}

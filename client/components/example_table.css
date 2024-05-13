@@ -1,0 +1,464 @@
+thead {
+  height: 50px;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+thead.search-box-shown {
+  height: 68px;
+}
+
+th {
+  background-color: var(--comparator-greyblue-300);
+  color: white;
+  font-weight: normal;
+  line-height: 17px;
+  overflow: hidden;
+  padding: 8px 6px 2px 6px;
+  position: relative;
+  vertical-align: top;
+}
+
+td {
+  border-bottom: 1px solid #ddd;
+  border-right: 1px solid var(--comparator-grey-200);
+  /* LINT.IfChange */
+  line-height: 1.4em;
+  /* LINT.ThenChange(../lib/constants.ts) */
+  padding: 8px 4px 2px 12px;
+  vertical-align: top;
+}
+
+tr.selected td {
+  background-color: var(--comparator-green-100);
+}
+
+/* Header row */
+th.example-index {
+  min-width: 25px;
+  width: 25px;
+}
+
+th.input-text {
+  min-width: 300px;
+  width: 30%;
+}
+
+th.output-text {
+  min-width: 300px;
+  overflow-x: hidden;
+  width: 35%;
+}
+
+tr.one-text-column-hidden th.input-text,
+tr.one-text-column-hidden th.output-text,
+tr.one-text-column-hidden th.custom-text {
+  width: 50%;
+}
+
+tr.two-text-columns-hidden th.input-text,
+tr.two-text-columns-hidden th.output-text {
+  width: 100%;
+}
+
+th.output-a {
+  background-color: var(--comparator-model-a);
+}
+
+th.output-b {
+  background-color: var(--comparator-model-b);
+}
+
+th.tags {
+  min-width: 60px;
+  width: 70px;
+}
+
+th.score {
+  min-width: 70px;
+  padding-left: 2px;
+  padding-right: 10px;
+  width: 70px;
+}
+
+th.rationales {
+  min-width: 250px;
+  width: 30%;
+}
+
+th.rationale-list {
+  min-width: 200px;
+  width: 20%;
+}
+
+th.custom-number {
+  min-width: 20px;
+  width: 50px;
+}
+
+th.custom-string,
+th.custom-category,
+th.custom-url {
+  min-width: 100px;
+}
+
+th.custom-text {
+  min-width: 250px;
+  width: 30%;
+}
+
+th.custom-image {
+  width: 200px;
+}
+
+th .custom-field-name {
+  max-width: 100px;
+}
+
+th.custom-number .custom-field-name {
+  max-width: 50px;
+}
+
+th.custom-per-model .custom-field-name {
+  max-width: 120px;
+}
+
+th.custom-per-model-boolean {
+  min-width: 50px;
+}
+
+th.custom-per-model-number {
+  min-width: 60px;
+}
+
+th.custom-per-model-category {
+  min-width: 120px;
+}
+
+th.custom-per-rating-string {
+  min-width: 100px;
+}
+
+th.custom-per-rating-per-model-category {
+  min-width: 135px;
+}
+
+tr.header-row th.custom-per-model {
+  height: auto;
+}
+
+tr.second-row th {
+  height: 20px;
+  padding-top: 0;
+}
+
+tr.second-row .sort-icons-container {
+  top: 1px;
+}
+
+/* Change padding when holder exists */
+td.input-text,
+td.output-text,
+td.rationales,
+td.custom-string,
+td.custom-category,
+td.custom-text,
+td.custom-url,
+td.custom-image,
+td.custom-per-rating-string,
+td.custom-per-rating-per-model-category {
+  padding: 0 0 0 12px;
+  position: relative;
+}
+
+/* for list-holder */
+td.rationale-list {
+  padding: 0 0 0 8px;
+}
+
+td.tags {
+  overflow-x: hidden;
+  word-break: break-word;
+}
+
+td.score {
+  padding-left: 4px;
+  text-align: center;
+}
+
+td.score.a-win {
+  background-color: var(--comparator-model-a-win-bg);
+}
+
+td.score.b-win {
+  background-color: var(--comparator-model-b-win-bg);
+}
+
+.score-number {
+  font-size: 14px;
+}
+
+.score-description {
+  background-color: var(--comparator-grey-450);
+  border-radius: 5px;
+  color: white;
+  display: inline-block;
+  font-size: 11px;
+  margin: 2px 0;
+  opacity: 0.8;
+  padding: 0 3px;
+}
+
+.rater-info-link {
+  color: var(--comparator-grey-600);
+  font-size: 11px;
+  padding: 4px 0;
+  text-decoration: underline;
+}
+
+td.score:hover .rater-info-link {
+  color: var(--comparator-grey-800);
+}
+
+ul.rationale-list {
+  line-height: 1.3em;
+  padding-left: 15px;
+}
+
+ul.rationale-list li {
+  border-radius: 5px;
+  margin: 0 2px 4px;
+  position: relative;
+}
+
+/* for applying background-color also to the areas for the bulleted points */
+ul.rationale-list li::before {
+  border-radius: 5px;
+  content: '';
+  height: 100%;
+  left: -16px;
+  position: absolute;
+  top: 0;
+  width: 35px;
+  z-index: -1;
+}
+
+ul.rationale-list li.cluster-selected {
+  background-color: var(--comparator-greygreen-100);
+  color: #000;
+}
+
+ul.rationale-list li:hover,
+ul.rationale-list li:hover::before,
+ul.rationale-list li.cluster-selected::before {
+  background-color: var(--comparator-greygreen-200);
+}
+
+.text-holder,
+.list-holder,
+.sequence-chunks-holder {
+  height: 119px;  /* Set default as 17px x 7 rows */
+  overflow-x: hidden;
+  overflow-y: scroll;
+  padding-top: 8px;
+}
+
+.text-holder {
+  overflow-wrap: anywhere;
+  white-space: break-spaces;
+}
+
+.sequence-chunks-holder {
+  overflow-wrap: anywhere;
+}
+
+tr.monospace .text-holder {
+  font-family: monospace;
+}
+
+.text-chunk {
+  white-space: break-spaces;
+}
+
+.highlighted-match {
+  color: var(--comparator-green-500);
+}
+
+.highlighted-search-match {
+  background-color: var(--comparator-search-match-background);
+  color: var(--comparator-search-match-foreground);
+  font-weight: 600;
+}
+
+/* For tag chips */
+.input-text {
+  overflow-x: hidden;
+}
+
+.input-text .text-holder:after,
+.input-text .sequence-chunks-holder:after {
+  content: "";
+  display: block;
+  height: 28px;
+}
+
+td .tag-chips {
+  bottom: 0;
+  display: flex;
+  margin: 3px 20px 3px 0;
+  padding-left: 0;
+  position: absolute;
+}
+
+td .tag-chips .tag-chip {
+  background-color: var(--comparator-custom-func-200);
+  border: 1px solid var(--comparator-custom-func-500);
+  border-radius: 15px;
+  color: var(--comparator-custom-func-800);
+  list-style: none;
+  margin-right: 2px;
+  padding: 1px 10px;
+  white-space: nowrap;
+}
+
+/* For custom function chips */
+.output-text .text-holder:after {
+  content: "";
+  display: block;
+  height: 28px;
+}
+
+td .custom-func-result-chip {
+  background-color: var(--comparator-custom-func-200);
+  border: 1px solid var(--comparator-custom-func-500);
+  bottom: 0;
+  border-radius: 15px;
+  color: var(--comparator-custom-func-800);
+  margin: 3px 20px 3px 0;
+  padding: 1px 15px;
+  position: absolute;
+}
+
+td .custom-func-result-chip.greyscale {
+  background-color: var(--comparator-grey-100);
+  border: 1px solid var(--comparator-grey-200);
+  color: #aaa;
+}
+
+/* Custom fields */
+td.custom-number {
+  text-align: right;
+}
+
+td.custom-string,
+td.custom-category {
+  word-break: break-word;
+}
+
+td.custom-url {
+  word-break: break-all;
+}
+
+/* Per-model fields */
+table.per-model-data {
+  width: 100%;
+}
+
+table.per-model-data td {
+  min-width: 25px;
+  padding: 6px 4px;
+  width: 50%;
+}
+
+td.custom-per-model-category td {
+  min-width: 50px;
+}
+
+td.custom-per-model-first {
+  border-left: 1px solid var(--comparator-grey-300);
+}
+
+td.custom-per-model-last {
+  border-right: 1px solid var(--comparator-grey-300);
+}
+
+.chart-holder {
+  height: 119px;  /* Set default as 17px x 7 rows */
+  overflow-wrap: anywhere;
+  overflow-y: auto;
+  padding-top: 8px;
+}
+
+/* Set scrollbar as optional */
+td.custom-string .text-holder,
+td.custom-category .text-holder,
+td.custom-url .text-holder {
+  overflow-y: auto;
+}
+
+td.custom-image img {
+  max-height: 110px;
+  max-width: 180px;
+}
+
+/* Sort icons */
+.sort-icons-container {
+  background-color: var(--comparator-greyblue-300);
+}
+
+th.output-a .sort-icons-container {
+  background-color: var(--comparator-model-a);
+}
+
+th.output-b .sort-icons-container {
+  background-color: var(--comparator-model-b);
+}
+
+/* Search */
+.search-icon-container {
+  right: 14px;
+  position: absolute;
+  top: 10px;
+}
+
+.search-icon-container .sort-icon {
+  font-size: 16px;
+}
+
+th .search-field {
+  bottom: 3px;
+  display: flex;
+  font-size: 11px;
+  gap: 2px;
+  left: 5%;
+  position: absolute;
+  width: 90%;
+}
+
+th .search-field input {
+  background: rgba(255, 255, 255, 0.5);
+  border: 0;
+  padding: 3px 5px;
+  width: 100%;
+}
+
+th .search-field button {
+  border: 0;
+  color: var(--comparator-grey-500);
+}
+
+/* Show more */
+.display-more-button {
+  background-color: var(--comparator-grey-100);
+  border: 0;
+  font-size: 13px;
+  margin: 10px 0;
+  text-align: center;
+  padding: 10px 0;
+  width: 100%;
+}
+
+.display-more-button:hover {
+  background-color: var(--comparator-greygreen-100);
+}

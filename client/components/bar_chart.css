@@ -1,0 +1,47 @@
+.bar-chart {
+  display: block;
+  margin: 0;
+}
+
+text {
+  alignment-baseline: middle;
+  fill: var(--comparator-grey-800);
+  font-size: 11px;
+  text-anchor: middle;
+}
+
+.bar {
+  fill: var(--comparator-grey-400);
+  fill-opacity: 0.5;
+  stroke-width: 0;
+}
+
+.bar.some-selected,
+.bar-label.some-selected {
+  fill-opacity: 0.2;
+}
+
+.bar.selected,
+.bar-label.selected,
+.bar:hover {
+  fill-opacity: 1.0;
+}
+
+text.bar-label {
+  font-size: 10px;
+  text-anchor: start;
+}
+
+.bar-chart .axis {
+  fill: none;
+  stroke: var(--comparator-grey-400);
+  stroke-width: 1;
+}
+
+.bar-chart .axis-label {
+  text-anchor: end;
+}
+
+text.highlighted {
+  font-weight: 600;
+}

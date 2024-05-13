@@ -1,0 +1,98 @@
+.dataset-selection-container {
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  height: calc(100vh - 57px);
+  justify-content: center;
+  position: absolute;
+  width: 100vw;
+  z-index: 10;
+}
+
+.dataset-selection {
+  background-color: #fff;
+  border-radius: 10px;
+  font-size: 13px;
+  height: 520px;
+  overflow-y: auto;
+  padding: 40px;
+  position: relative;
+  width: 700px;
+}
+
+.close-button {
+  padding: 20px;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.panel-title {
+  color: var(--comparator-grey-250);
+  font-size: 24px;
+  padding-bottom: 5px;
+}
+
+.panel-title .selected {
+  color: var(--comparator-grey-800);
+}
+
+.panel-instruction {
+  color: #555;
+  line-height: 16px;
+  margin: 5px 0;
+  padding: 2px 0;
+}
+
+.textarea-wrapper {
+  display: flex;
+  margin: 5px 0;
+}
+
+.textarea-filepath {
+  border-radius: 5px;
+  font-family: monospace;
+  font-size: 14px;
+  margin-right: 5px;
+  padding: 5px;
+  width: calc(100% - 70px);
+  word-break: break-all;
+}
+
+.filepath {
+  background-color: #f3f3f3;
+  font-family: monospace;
+  word-break: break-all;
+}
+
+ul {
+  border-top: 1px solid #eee;
+  margin: 5px 0 25px 10px;
+  padding-left: 0;
+}
+
+li {
+  background-color: #fff;
+  border-bottom: 1px solid #eee;
+  color: #777;
+  font-family: monospace;
+  list-style: none;
+  padding: 10px;
+  word-break: break-all;
+}
+
+li:hover {
+  background-color: #eee;
+  color: #555;
+  text-decoration: underline;
+}
+
+input, button {
+  font-size: 13px;
+  padding: 5px 7px;
+}
+
+.file-upload {
+  font-size: 14px;
+  padding: 10px 0;
+}
