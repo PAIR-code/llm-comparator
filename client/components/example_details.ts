@@ -153,7 +153,7 @@ export class ExampleDetailsElement extends MobxLitElement {
     </comparator-histogram>`;
   }
 
-  // TODO(b/311725252): Create a separate data-table component.
+  // TODO: Create a separate data-table component.
   private renderRaterTable() {
     const selectedExample = this.selectedExample;
     if (selectedExample == null) {
@@ -237,18 +237,17 @@ export class ExampleDetailsElement extends MobxLitElement {
         <th class="score" rowspan="2">Score ${renderSortIcons()}</th>
         <th class="label" rowspan="2">Rating</th>
         <th class="flipped" rowspan="2">Flipped?</th>
-        <th class="rationale" rowspan="2">
-          Rationale
-          <small>(Careful for flipped cases!)</small>
-        </th>
-        ${this.appState.customFieldsOfPerRatingType.map((field: Field) =>
-          renderCustomFieldHeaderCell(field),
-        )}
+        <th class="rationale" rowspan="2">Rationale</th>
+        ${
+        this.appState.customFieldsOfPerRatingType.map(
+            (field: Field) => renderCustomFieldHeaderCell(field),
+            )}
       </tr>
       <tr class="second-row">
-        ${this.appState.customFieldsOfPerRatingType.map((field: Field) =>
-          renderCustomFieldHeaderCellSecondRow(field),
-        )}
+        ${
+        this.appState.customFieldsOfPerRatingType.map(
+            (field: Field) => renderCustomFieldHeaderCellSecondRow(field),
+            )}
       </tr>`;
 
     // Table body.

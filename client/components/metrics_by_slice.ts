@@ -57,7 +57,7 @@ enum SortOrder {
 }
 
 /**
- * Component for visualizing Autorater scores.
+ * Component for visualizing avg score and win rate metrics by slice.
  */
 @customElement('comparator-metrics-by-slice')
 export class MetricsBySliceElement extends MobxLitElement {
@@ -257,6 +257,7 @@ export class MetricsBySliceElement extends MobxLitElement {
     }
   }
 
+  // Render a confidence interval chart for average scores.
   private renderScoreConfIntervalChart(
     avgScore: number | null,
     intervalLeft: number,
@@ -296,7 +297,7 @@ export class MetricsBySliceElement extends MobxLitElement {
           ),
     });
 
-    // TODO(b/325506046): Use tooltip for confidence interval details.
+    // TODO: Use tooltip for confidence interval details.
     const tooltipText = `${`95% CI: [${intervalLeft.toFixed(
       3,
     )}, ${intervalRight.toFixed(3)}]`}`;
@@ -356,10 +357,6 @@ export class MetricsBySliceElement extends MobxLitElement {
           ),
     });
 
-    // Only visualizes when individual rating data are available.
-    // If unavailable, it is likely the cases where ratings are flattened and
-    // same prompts are repeated (like in Bard Eval).
-    // For these cases, confidence intervals would be misleading.
     const renderScoreConfIntervalChart = this.renderScoreConfIntervalChart(
       avgScore,
       intervalLeft,
@@ -376,6 +373,7 @@ export class MetricsBySliceElement extends MobxLitElement {
     </div>`;
   }
 
+  // Render a win rate chart using a stacked percentage bar chart.
   private renderWinRateChart(
       winRate: number,
       entry: SliceWinRate,
@@ -419,7 +417,7 @@ export class MetricsBySliceElement extends MobxLitElement {
           y2=${this.barHeight * 0.5} />`
         : svg``;
 
-    // TODO(b/325506046): Use tooltip for confidence interval details.
+    // TODO: Use tooltip for confidence interval details.
     const tooltipText =
       intervalLeft != null && intervalRight != null
         ? `${`95% CI: [${intervalLeft.toFixed(3)}, ${intervalRight.toFixed(
@@ -618,7 +616,6 @@ export class MetricsBySliceElement extends MobxLitElement {
   }
 
   override render() {
-    // prettier-ignore
     return html`${this.renderWinRateBySliceChart()}`;
   }
 }

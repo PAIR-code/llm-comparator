@@ -38,7 +38,7 @@ import {styles} from './histogram.css';
 
 /**
  * Component for histograms for the distribution of scores or custom funcs.
- * TODO(b/311744307): Extract common parts in the bar chart.
+ * TODO: Extract common parts in the bar chart.
  */
 @customElement('comparator-histogram')
 export class HistogramElement extends MobxLitElement {

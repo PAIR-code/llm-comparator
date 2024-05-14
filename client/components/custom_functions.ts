@@ -245,7 +245,7 @@ export class CustomFunctionsElement extends MobxLitElement {
     </comparator-binary-stacked-bar-chart>`;
   }
 
-  // TODO(b/326139568): Merge into the side-by-side histogram code in charts.ts.
+  // TODO: Merge into the side-by-side histogram code in charts.ts.
   private renderChartForNumberType(customFunc: CustomFunction) {
     const getHistogramSpec = () =>
         this.appState.histogramSpecForCustomFuncs[customFunc.id];
@@ -423,7 +423,7 @@ export class CustomFunctionsElement extends MobxLitElement {
       'disabled': customFunc.precomputed === true,
     });
 
-    // TODO(b/323336525): Improve the design for displaying custom func rows.
+    // TODO: Improve the design for displaying custom func rows.
     // prettier-ignore
     return html`
       <tr class=${customFuncRowStyle(customFunc.id)}>

@@ -29,7 +29,7 @@ import {AppState} from '../services/state_service';
 import {styles} from './dataset_selection.css';
 
 /**
- * Dataset Selection component.
+ * Component for selecting data files.
  */
 @customElement('comparator-dataset-selection')
 export class DatasetSelectionElement extends MobxLitElement {
@@ -53,11 +53,17 @@ export class DatasetSelectionElement extends MobxLitElement {
 
     return html`
       <div>
-        The json file must contain these three properties: "metadata", "models",
-        and "examples".
+        The json file must contain these three properties:
+        <span class="filepath">metadata</span>,
+        <span class="filepath">models</span>,
+        and <span class="filepath">examples</span>.
         <br />
-        Each example must have "input_text", "tags", "output_text_a",
-        "output_text_b", and "score".
+        Each example in <span class="filepath">examples</span> must have
+        <span class="filepath">input_text</span>,
+        <span class="filepath">tags</span>,
+        <span class="filepath">output_text_a</span>,
+        <span class="filepath">output_text_b</span>,
+        and <span class="filepath">score</span>.
         <br />
         Please refer to our document for details:
         <a href="${documentationLink}" target="_blank">${documentationLink}</a>
@@ -94,7 +100,7 @@ export class DatasetSelectionElement extends MobxLitElement {
 
     const textareaPlaceholder = 'Enter a URL to load the json file from.';
     const urlLoadPath =
-        this.appState.appLink + '?results_path=https://.../results.json';
+        this.appState.appLink + '?results_path=https://.../...json';
     const panelIntro = html`
       Enter the URL path of a json file prepared for LLM Comparator.`;
     const panelOutro = html`

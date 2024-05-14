@@ -217,6 +217,11 @@ td.score.b-win {
   text-decoration: underline;
 }
 
+.selected .rater-info-link {
+  color: var(--comparator-grey-800);
+  font-weight: 600;
+}
+
 td.score:hover .rater-info-link {
   color: var(--comparator-grey-800);
 }
@@ -257,7 +262,8 @@ ul.rationale-list li.cluster-selected::before {
 
 .text-holder,
 .list-holder,
-.sequence-chunks-holder {
+.sequence-chunks-holder,
+.score-holder {
   height: 119px;  /* Set default as 17px x 7 rows */
   overflow-x: hidden;
   overflow-y: scroll;
@@ -271,6 +277,11 @@ ul.rationale-list li.cluster-selected::before {
 
 .sequence-chunks-holder {
   overflow-wrap: anywhere;
+}
+
+.score-holder {
+  overflow-y: hidden;
+  padding-top: 0;
 }
 
 tr.monospace .text-holder {

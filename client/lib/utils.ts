@@ -677,9 +677,8 @@ export function getBarFilterLabel(
  * Helper for cleaning LLM-generated values.
  */
 export function cleanValue(val: string | null) {
-  // There exist many variants of "issues" (e.g., "No Issues", "No issues(s),
-  // "Major issue(s)", etc. We detect them and replace with "issues".
-  return val == null ? val : val.replace(/\bissues?\(?(s)?\)?$/i, 'issues');
+  // We can include some manual data cleaning pipelines.
+  return val;
 }
 
 /**

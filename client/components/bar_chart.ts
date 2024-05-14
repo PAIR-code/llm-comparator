@@ -37,7 +37,7 @@ export interface AggregatedEntry {
 
 /**
  * Component for bar charts. Currently for rating scores by individual raters.
- * TODO(b/311744307): Extract common parts in the histogram.
+ * TODO: Extract common parts in the histogram.
  */
 @customElement('comparator-bar-chart')
 export class BarChartElement extends MobxLitElement {

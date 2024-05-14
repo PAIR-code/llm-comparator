@@ -1,3 +1,8 @@
+thead {
+  position: sticky;
+  top: 0;
+}
+
 th.score-avg {
   width: 98px;  /* width sum for score-avg-number and score-avg-chart */
 }
@@ -111,9 +116,9 @@ rect.bar.win-rate-result-tie {
   fill: var(--comparator-grey-400);
 }
 
-.collapsed {
+.collapsed .table-container {
   max-height: 220px;
-  overflow-y: hidden;
+  overflow-y: scroll;
 }
 
 line.middle-point-vertical {

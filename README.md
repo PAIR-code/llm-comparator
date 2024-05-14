@@ -3,16 +3,16 @@
 LLM Comparator is an interactive visualization tool for analyzing side-by-side
 LLM evaluation results. It is designed to help people qualitatively analyze how
 responses from two models differ at example- and slice-levels. Users can
-interactively discover insights like "Model A's responses are better than B's on
-email rewriting tasks because Model A tends to generate bulleted lists more
-often."
+interactively discover insights like *"Model A's responses are better than B's
+on email rewriting tasks because Model A tends to generate bulleted lists more
+often."*
 
 ![Screenshot of LLM Comparator interface](documentation/images/llm_comparator_screenshot.png)
 
 
 ## Using LLM Comparator
 
-You can open LLM Comparator at https://pair-code.github.io/llm-comparator/.
+You can play with LLM Comparator at https://pair-code.github.io/llm-comparator/.
 
 You can either select one of the example files we provide, or you can upload
 your own JSON file (e.g.,
@@ -25,19 +25,19 @@ that follows our format which we describe below.
 We provide an example file for comparing
 the model responses between [Gemma](https://ai.google.dev/gemma) 1.1 and 1.0
 for prompts obtained from the
-[Chatbot Arena Conversations dataset](https://huggingface.co/datasets/lmsys/chatbot_arena_conversations). You can click the link below to play with it:
+[Chatbot Arena Conversations dataset](https://huggingface.co/datasets/lmsys/chatbot_arena_conversations).
+You can click the link below to play with it:
 https://pair-code.github.io/llm-comparator/?results_path=https://pair-code.github.io/llm-comparator/data/example_arena.json
 
 The tool helps you analyze *when* and *why* Gemma 1.1 is better or worse than
-1.0 and *how* responses from two models qualitatively differ.
+1.0 and *how* responses from two models differ.
 
-- ***When***: The **Score Distribution** panel shows that the quality of
-responses from Model A (Gemma 1.1) is considered better than that from Model B
-(Gemma 1.0) (larger blue area than orange),
-according to the LLM-based evaluation method
+- ***When***: The **Score Distribution** and **Metrics by Prompt Category**
+panels show that the quality of responses from Model A (Gemma 1.1) is considered
+better than that from Model B (Gemma 1.0) (larger blue area than orange;
+>50% win rate), according to the LLM-based evaluation method
 ([LLM-as-a-judge](https://arxiv.org/abs/2306.05685)).
-This holds true for most prompt categories
-(as in **Metrics by Prompt Category** panel).
+This holds true for most prompt categories (e.g., Humanities, Math).
 - ***Why***: The **Rationale Summary** panel dives into the reasons behind these
 score differences.
 In this case, the LLM judge focused mostly on the amount of details. It also
@@ -60,8 +60,8 @@ must follow the schema described below.
 
 We assume that a user has a set of input prompts to test. For each prompt, they
 need to prepare the responses to the prompt from two LLMs (i.e., Model A, Model
-B), and a numerical score obtained from automatic side-by-side evaluation (also
-known as [LLM-as-a-judge](https://arxiv.org/abs/2306.05685) or
+B), and a numerical score obtained from side-by-side evaluation (e.g.,
+[LLM-as-a-judge](https://arxiv.org/abs/2306.05685),
 [AutoSxS](https://cloud.google.com/vertex-ai/generative-ai/docs/models/side-by-side-eval)).
 A positive score represents that A's response is better than B's; a negative
 score indicates B is better; and zero meaning a tie.
@@ -83,7 +83,7 @@ All the fields presented below are required.
     "examples": [
         {
             "input_text": "This is a prompt.",
-            "tags": ["Coding"],  # A list of keywords for categorizing prompts
+            "tags": ["Math"],  # A list of keywords for categorizing prompts
             "output_text_a": "Response to the prompt from the first model (A)",
             "output_text_b": "Response to the prompt from the other model (B)",
             "score": -1.25,  # Score from the judge LLM
@@ -100,13 +100,13 @@ All the fields presented below are required.
 
 ### Additional Data
 
-Users can optionally provide additional information to be analyzed in LLM
+You can optionally provide additional information to be analyzed in LLM
 Comparator.
 
 #### Custom Fields
 
 If you have additional information about each prompt, it can be displayed as
-a column in the table and aggregated information is visualized as a chart
+columns in the table and aggregated information is visualized as charts
 on the right side of the interface. It supports various data types, such as:
 
 - `number`: Numeric data, visualized as histograms (e.g., word count for prompt,
@@ -231,18 +231,18 @@ npm run serve
 
 ## Citing LLM Comparator
 
-If you use LLM Comparator as part of your work, please cite our paper at
-https://arxiv.org/abs/2402.10524.
+If you use LLM Comparator as part of your work, please cite our research paper
+at https://arxiv.org/abs/2402.10524.
 
 ```
 @inproceedings{kahng2024comparator,
-    title={{LLM Comparator}: Visual Analytics for Side-by-Side Evaluation of
-    Large Language Models},
+    title={{LLM Comparator}: Visual Analytics for Side-by-Side Evaluation of Large Language Models},
     author={Kahng, Minsuk and Tenney, Ian and Pushkarna, Mahima and Liu, Michael Xieyang and Wexler, James and Reif, Emily and Kallarackal, Krystal and Chang, Minsuk and Terry, Michael and Dixon, Lucas},
-    booktitle={Extended Abstracts of the CHI Conference on Human Factors in
-    Computing Systems},
+    booktitle={Extended Abstracts of the CHI Conference on Human Factors in Computing Systems},
     year={2024},
     publisher={ACM},
+    doi={10.1145/3613905.3650755},
+    url={https://arxiv.org/abs/2402.10524}
 }
 ```
 

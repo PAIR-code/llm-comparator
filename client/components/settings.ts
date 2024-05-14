@@ -77,7 +77,7 @@ declare global {
 }
 
 /**
- * Renders the data table settings pop-up.
+ * Renders the data table settings pop-up on the left side.
  */
 @customElement('comparator-settings')
 export class ComparatorSettingsElement extends MobxLitElement {

@@ -51,7 +51,7 @@ export class RationaleSummaryElement extends MobxLitElement {
   private readonly widthOfNumberLabel = 10;
 
   // Whether to show the "others" category (id=0).
-  // TODO(kahng): Implemented, but decided not to display it for now.
+  // TODO: Implemented, but decided not to display it for now.
   @observable showOthers = false;
 
   @observable sortColumn = 'A'; // label, A, or B
@@ -297,10 +297,7 @@ export class RationaleSummaryElement extends MobxLitElement {
         <div class="component-content-top">
           <div class="description">
             What are some clusters of the rationales used by the rater
-            when it thinks
-            ${this.sortColumn === 'A' || this.sortColumn === 'B'
-              ? `${this.sortColumn}`
-              : 'either A or B'} is better?
+            when it thinks A or B is better?
           </div>
         </div>
         <div class="table-container">

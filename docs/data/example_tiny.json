@@ -1,30 +1,52 @@
 {
   "metadata": {
     "source_path": "n/a: synthetic data for LLM Comparator demo",
-    "custom_fields_schema": []
+    "custom_fields_schema": [
+      {"name": "language", "type": "per_model_category"}
+    ]
   },
   "models": [
-    {"name": "ABC 1.1"},
-    {"name": "ABC 1.0"}
+    {"name": "ABC v0.6"},
+    {"name": "ABC v0.5"}
   ],
   "examples": [
     {
-      "input_text": "Which city should I visit in South Korea?",
-      "tags": ["Travel"],
-      "output_text_a": "You can visit Seoul, the capital of South Korea.",
-      "output_text_b": "You can visit Seoul, Busan, and Jeju.",
+      "input_text": "What is LLM Comparator?",
+      "tags": ["Technology"],
+      "output_text_a": "LLM Comparator is an interactive tool for analyzing results from side-by-side LLM evaluation. It visualizes model performance and helps users explore individual responses.\n\nIt has been developed by the People + AI Research Team at Google. The code is available at https://github.com/PAIR-code/llm-comparator.",
+      "output_text_b": "LLM Comparator is a tool for comparing LLM responses from two different models.",
       "score": 0.5,
-      "individual_rater_scores": [],
-      "custom_fields": {}
-	},
+      "individual_rater_scores": [
+        {"score": 1.0, "rating_label": "A is better", "is_flipped": false, "rationale": "Response A is more detailed."},
+        {"score": 1.5, "rating_label": "A is much better", "is_flipped": false, "rationale": "Response A provides more information."},
+        {"score": -0.5, "rating_label": "B is slightly better", "is_flipped": true, "rationale": "Response B more succinctly answers the question."},
+        {"score": 0.0, "rating_label": "same", "is_flipped": true, "rationale": "Both provide correct information."}
+      ],
+      "custom_fields": {
+        "language": ["English", "English"]
+      }
+    },
     {
       "input_text": "How to draw bar charts using Python?",
-      "tags": ["Coding"],
-      "output_text_a": "I don't know it.",
-      "output_text_b": "You can use some data visualization libraries.",
+      "tags": ["Technology"],
+      "output_text_a": "Bar charts can be created by using data visualization libraries.",
+      "output_text_b": "You can draw bar charts using data visualization libraries.\n\n- Matplotlib is a very popular, established library primarily for creating static plots.\n- Plotly is a web-based visualization library for creating a variety of interactive charts.\n- Altair is a declarative visualization library based on a simple, expressive grammar.",
       "score": -1.0,
       "individual_rater_scores": [],
-      "custom_fields": {}
+      "custom_fields": {
+        "language": ["English", "English"]
+      }
+    },
+    {
+      "input_text": "Which city should I visit in South Korea?",
+      "tags": ["Travel"],
+      "output_text_a": "You can visit Seoul.\n\nSeoul is the capital of South Korea. It is the country's largest city with a population of nearly ten million people.",
+      "output_text_b": "Sure, I can tell you. You can visit Seoul, Busan, and Jeju.\n\n- Seoul is the capital city with historic palaces and skyscrapers\n- Busan is the second-largest city with beautiful beaches\n- Jeju is a volcanic island and famous for its natural scenery.",
+      "score": 0.5,
+      "individual_rater_scores": [],
+      "custom_fields": {
+        "language": ["English", "English"]
+      }
     },
     {
       "input_text": "Hi, how are you?",
@@ -32,8 +54,23 @@
       "output_text_a": "Good, how are you?",
       "output_text_b": "Hi, how are you?",
       "score": 0.0,
+      "individual_rater_scores": [
+        {"score": 0.0, "rationale": "There is no meaningful difference."}
+	  ],
+      "custom_fields": {
+        "language": ["English", "English"]
+      }
+    },
+    {
+      "input_text": "How to say hello in Korean?",
+      "tags": [],
+      "output_text_a": "안녕하세요?",
+      "output_text_b": "I don't speak Korean.",
+      "score": 1.5,
       "individual_rater_scores": [],
-      "custom_fields": {}
+      "custom_fields": {
+        "language": ["Korean", "English"]
+      }
     }
   ]
 }

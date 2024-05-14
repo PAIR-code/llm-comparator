@@ -91,12 +91,16 @@ export class ExampleTableElement extends MobxLitElement {
 
   private styleHolder(example: Example) {
     return styleMap({
-      'height':
-        this.appState.selectedExample !== example
-          ? `${
-              this.appState.numberOfLinesPerOutputCell * LINE_HEIGHT_IN_CELL
-            }px`
-          : 'auto',
+      'height': this.appState.getIsExampleExpanded(example.index) !== true ?
+          `${
+              this.appState.numberOfLinesPerOutputCell *
+              LINE_HEIGHT_IN_CELL}px` :
+          'auto',
+      'min-height': this.appState.getIsExampleExpanded(example.index) === true ?
+          `${
+              this.appState.numberOfLinesPerOutputCell *
+              LINE_HEIGHT_IN_CELL}px` :
+          null,
     });
   }
 
@@ -233,13 +237,16 @@ export class ExampleTableElement extends MobxLitElement {
 
   private renderRow(example: Example, rowIndex: number) {
     const handleDoubleClickRow = () => {
-      this.appState.selectedExample =
-        this.appState.selectedExample === example ? null : example;
+      this.appState.isExampleExpanded[example.index] =
+          this.appState.getIsExampleExpanded(example.index) === true ? false :
+                                                                       true;
     };
     const styleRow = classMap({
       'selected': this.appState.selectedExample === example,
       'monospace': this.appState.useMonospace === true,
     });
+
+    const styleHolder = this.styleHolder(example);
 
     // Use text diff only when both are texts.
     const textDiff =
@@ -376,10 +383,12 @@ export class ExampleTableElement extends MobxLitElement {
           </div>
           ${renderHistogram}` :
         '';
-    const renderScore = example.score == null ? 'null' : html`
+    const renderScore = example.score == null ? 'Null' : html`
+        <div class="score-holder" style=${styleHolder}>
           <div class="score-number">${example.score.toFixed(2)}</div>
           ${scoreDescription}
-          ${raterInfoLink}`;
+          ${raterInfoLink}
+        </div>`;
 
     const styleScore = classMap({
       'score': true,
@@ -466,8 +475,6 @@ export class ExampleTableElement extends MobxLitElement {
             selectedCustomFunc,
             ) :
         html``;
-
-    const styleHolder = this.styleHolder(example);
 
     // Custom fields.
     const renderCustomField = (field: Field, columnIndex: number) => {

@@ -11382,11 +11382,6 @@ rect.clickable-transparent-area.selected:hover {
     constructor(customFunctionService) {
       super();
       this.customFunctionService = customFunctionService;
-      this.datasetPath = null;
-      this.isDatasetPathUploadedFile = false;
-      this.isOpenDatasetSelectionPanel = true;
-      this.targetTeam = "app";
-      this.exampleDatasetPaths = BUILT_IN_DEMO_FILES;
       this.metadata = {
         source_path: "",
         custom_fields_schema: [],
@@ -11395,9 +11390,14 @@ rect.clickable-transparent-area.selected:hover {
       this.models = [{ name: "" }, { name: "" }];
       this.examples = [];
       this.rationaleClusters = [];
-      this.currentSorting = DEFAULT_SORTING_CRITERIA;
-      this.selectedExample = null;
+      this.datasetPath = null;
+      this.isDatasetPathUploadedFile = false;
+      this.isOpenDatasetSelectionPanel = true;
+      this.exampleDatasetPaths = BUILT_IN_DEMO_FILES;
       this.selectedTag = null;
+      this.currentSorting = DEFAULT_SORTING_CRITERIA;
+      this.isExampleExpanded = {};
+      this.selectedExample = null;
       this.showSelectedExampleDetails = false;
       this.exampleDetailsPanelExpanded = false;
       this.hasRationaleClusters = false;
@@ -11428,7 +11428,6 @@ rect.clickable-transparent-area.selected:hover {
       this.isShowTagChips = true;
       this.isShowSidebar = true;
       this.numberOfLinesPerOutputCell = 7;
-      this.sampleCountForCheckingRatingLevelDataAvailability = 10;
       this.customFunctions = {};
       this.histogramSpecForCustomFuncs = {};
       this.histogramSpecForCustomFuncsOfDiff = {};
@@ -11437,6 +11436,9 @@ rect.clickable-transparent-area.selected:hover {
       this.isShowCustomFuncEditor = false;
       this.valueDomainsForCustomFields = {};
       makeObservable(this);
+    }
+    getIsExampleExpanded(index) {
+      return this.isExampleExpanded[index] ?? false;
     }
     resetSearchFilter(fieldId) {
       this.searchFilters[fieldId] = "";
@@ -11636,7 +11638,7 @@ rect.clickable-transparent-area.selected:hover {
       }
       return examples;
     }
-    // TODO(b/326139568): Merge with the side-by-side histograms.
+    // TODO: Merge with the side-by-side histograms.
     applyHistogramFilterForCustomFuncs(examplesBeforeThisFilter, excludeId = null, excludeModel = null) {
       let examples = examplesBeforeThisFilter;
       Object.values(this.customFunctions).filter(
@@ -11930,6 +11932,7 @@ rect.clickable-transparent-area.selected:hover {
       this.selectedExample = null;
       this.selectedTag = null;
       this.selectedCustomFuncId = null;
+      this.isExampleExpanded = {};
       this.selectedHistogramBinForScores = null;
       this.selectedHistogramBinForCustomFields = {};
       this.selectedBarChartValues = {};
@@ -11972,9 +11975,6 @@ rect.clickable-transparent-area.selected:hover {
           samplingStepSize,
           columnsToHide
         );
-      } else if (params.hasOwnProperty("cns_path")) {
-        const datasetPath = params["cns_path"];
-        this.loadData(datasetPath, null);
       }
     }
     // Update the sorting option.
@@ -12032,7 +12032,7 @@ rect.clickable-transparent-area.selected:hover {
       }
     }
     // Add histogram spec for custom functions with return type number.
-    // TODO(b/326139568): Merge with the side-by-side histograms.
+    // TODO: Merge with the side-by-side histograms.
     addHistogramSpecForCustomFunc(customFunc) {
       if (customFunc.returnType === "Number" /* NUMBER */) {
         const fieldId = getFieldIdForCustomFunc(customFunc.id);
@@ -12130,7 +12130,7 @@ rect.clickable-transparent-area.selected:hover {
         reader.readAsText(file);
       });
     }
-    // Load data either from the server or uploaded file.
+    // Load data either from a specified path or uploaded file.
     async loadData(datasetPath, fileObject = null, maxNumExamplesToDisplay = null, samplingStepSize = null, columnsToHide = []) {
       this.isOpenDatasetSelectionPanel = false;
       this.updateStatusMessage("Loading the dataset... Please wait...");
@@ -12317,7 +12317,7 @@ rect.clickable-transparent-area.selected:hover {
         this.selectionsFromCustomFuncResults[newId] = initializeCustomFuncSelections();
         this.runCustomFunction(this.examples, customFunc);
       });
-      const statusMessage = `Loaded the dataset of ${this.examples.length} examples.${this.metadata.sampling_step_size > 1 ? ` Because of the large size, we sampled data from every ${this.metadata.sampling_step_size} examples.` : ""}`;
+      const statusMessage = `Loaded the dataset of ${this.examples.length} examples.`;
       this.updateStatusMessage(statusMessage, true);
       const url = new URL(window.location.href);
       if (this.isDatasetPathUploadedFile === false) {
@@ -12402,6 +12402,7 @@ rect.clickable-transparent-area.selected:hover {
         this.updateStatusMessage(error, false);
       }
     }
+    // Remove a rationale cluster row.
     removeCluster(clusterId) {
       if (clusterId === this.selectedRationaleClusterId) {
         this.selectedRationaleClusterId = null;
@@ -12428,21 +12429,6 @@ rect.clickable-transparent-area.selected:hover {
   };
   __decorateClass([
     observable
-  ], AppState.prototype, "datasetPath", 2);
-  __decorateClass([
-    observable
-  ], AppState.prototype, "isDatasetPathUploadedFile", 2);
-  __decorateClass([
-    observable
-  ], AppState.prototype, "isOpenDatasetSelectionPanel", 2);
-  __decorateClass([
-    observable
-  ], AppState.prototype, "targetTeam", 2);
-  __decorateClass([
-    observable
-  ], AppState.prototype, "exampleDatasetPaths", 2);
-  __decorateClass([
-    observable
   ], AppState.prototype, "metadata", 2);
   __decorateClass([
     observable
@@ -12455,13 +12441,28 @@ rect.clickable-transparent-area.selected:hover {
   ], AppState.prototype, "rationaleClusters", 2);
   __decorateClass([
     observable
-  ], AppState.prototype, "currentSorting", 2);
+  ], AppState.prototype, "datasetPath", 2);
   __decorateClass([
     observable
-  ], AppState.prototype, "selectedExample", 2);
+  ], AppState.prototype, "isDatasetPathUploadedFile", 2);
+  __decorateClass([
+    observable
+  ], AppState.prototype, "isOpenDatasetSelectionPanel", 2);
+  __decorateClass([
+    observable
+  ], AppState.prototype, "exampleDatasetPaths", 2);
   __decorateClass([
     observable
   ], AppState.prototype, "selectedTag", 2);
+  __decorateClass([
+    observable
+  ], AppState.prototype, "currentSorting", 2);
+  __decorateClass([
+    observable
+  ], AppState.prototype, "isExampleExpanded", 2);
+  __decorateClass([
+    observable
+  ], AppState.prototype, "selectedExample", 2);
   __decorateClass([
     observable
   ], AppState.prototype, "showSelectedExampleDetails", 2);
@@ -12558,9 +12559,6 @@ rect.clickable-transparent-area.selected:hover {
   __decorateClass([
     computed
   ], AppState.prototype, "isScoreDivergingScheme", 1);
-  __decorateClass([
-    observable
-  ], AppState.prototype, "sampleCountForCheckingRatingLevelDataAvailability", 2);
   __decorateClass([
     observable
   ], AppState.prototype, "customFunctions", 2);
@@ -13263,7 +13261,7 @@ line.axis {
       .numExamples=${filteredExamples.length}>
     </comparator-binary-stacked-bar-chart>`;
     }
-    // TODO(b/326139568): Merge into the side-by-side histogram code in charts.ts.
+    // TODO: Merge into the side-by-side histogram code in charts.ts.
     renderChartForNumberType(customFunc) {
       const getHistogramSpec = () => this.appState.histogramSpecForCustomFuncs[customFunc.id];
       const getHistogramSpecForDiff = () => this.appState.histogramSpecForCustomFuncsOfDiff[customFunc.id];
@@ -13578,8 +13576,8 @@ line.axis {
 }
 
 .panel-instruction {
-  color: #555;
-  line-height: 16px;
+  color: var(--comparator-grey-800);
+  line-height: 18px;
   margin: 5px 0;
   padding: 2px 0;
 }
@@ -13654,11 +13652,17 @@ input, button {
       const documentationLink = "https://github.com/PAIR-code/llm-comparator";
       return x`
       <div>
-        The json file must contain these three properties: "metadata", "models",
-        and "examples".
+        The json file must contain these three properties:
+        <span class="filepath">metadata</span>,
+        <span class="filepath">models</span>,
+        and <span class="filepath">examples</span>.
         <br />
-        Each example must have "input_text", "tags", "output_text_a",
-        "output_text_b", and "score".
+        Each example in <span class="filepath">examples</span> must have
+        <span class="filepath">input_text</span>,
+        <span class="filepath">tags</span>,
+        <span class="filepath">output_text_a</span>,
+        <span class="filepath">output_text_b</span>,
+        and <span class="filepath">score</span>.
         <br />
         Please refer to our document for details:
         <a href="${documentationLink}" target="_blank">${documentationLink}</a>
@@ -13681,7 +13685,7 @@ input, button {
         "selected": this.appState.datasetPath === datasetPath
       });
       const textareaPlaceholder = "Enter a URL to load the json file from.";
-      const urlLoadPath = this.appState.appLink + "?results_path=https://.../results.json";
+      const urlLoadPath = this.appState.appLink + "?results_path=https://.../...json";
       const panelIntro = x`
       Enter the URL path of a json file prepared for LLM Comparator.`;
       const panelOutro = x`
@@ -13982,7 +13986,7 @@ td.rationale {
       .isFlipXAxis=${() => this.appState.isFlipScoreHistogramAxis}>
     </comparator-histogram>`;
     }
-    // TODO(b/311725252): Create a separate data-table component.
+    // TODO: Create a separate data-table component.
     renderRaterTable() {
       const selectedExample = this.selectedExample;
       if (selectedExample == null) {
@@ -14047,10 +14051,7 @@ td.rationale {
         <th class="score" rowspan="2">Score ${renderSortIcons()}</th>
         <th class="label" rowspan="2">Rating</th>
         <th class="flipped" rowspan="2">Flipped?</th>
-        <th class="rationale" rowspan="2">
-          Rationale
-          <small>(Careful for flipped cases!)</small>
-        </th>
+        <th class="rationale" rowspan="2">Rationale</th>
         ${this.appState.customFieldsOfPerRatingType.map(
         (field) => renderCustomFieldHeaderCell(field)
       )}
@@ -15145,6 +15146,11 @@ td.score.b-win {
   text-decoration: underline;
 }
 
+.selected .rater-info-link {
+  color: var(--comparator-grey-800);
+  font-weight: 600;
+}
+
 td.score:hover .rater-info-link {
   color: var(--comparator-grey-800);
 }
@@ -15185,7 +15191,8 @@ ul.rationale-list li.cluster-selected::before {
 
 .text-holder,
 .list-holder,
-.sequence-chunks-holder {
+.sequence-chunks-holder,
+.score-holder {
   height: 119px;  /* Set default as 17px x 7 rows */
   overflow-x: hidden;
   overflow-y: scroll;
@@ -15199,6 +15206,11 @@ ul.rationale-list li.cluster-selected::before {
 
 .sequence-chunks-holder {
   overflow-wrap: anywhere;
+}
+
+.score-holder {
+  overflow-y: hidden;
+  padding-top: 0;
 }
 
 tr.monospace .text-holder {
@@ -15433,7 +15445,8 @@ th .search-field button {
     }
     styleHolder(example) {
       return o10({
-        "height": this.appState.selectedExample !== example ? `${this.appState.numberOfLinesPerOutputCell * LINE_HEIGHT_IN_CELL}px` : "auto"
+        "height": this.appState.getIsExampleExpanded(example.index) !== true ? `${this.appState.numberOfLinesPerOutputCell * LINE_HEIGHT_IN_CELL}px` : "auto",
+        "min-height": this.appState.getIsExampleExpanded(example.index) === true ? `${this.appState.numberOfLinesPerOutputCell * LINE_HEIGHT_IN_CELL}px` : null
       });
     }
     renderPerModelField(values, field) {
@@ -15523,12 +15536,13 @@ th .search-field button {
     }
     renderRow(example, rowIndex) {
       const handleDoubleClickRow = () => {
-        this.appState.selectedExample = this.appState.selectedExample === example ? null : example;
+        this.appState.isExampleExpanded[example.index] = this.appState.getIsExampleExpanded(example.index) === true ? false : true;
       };
       const styleRow = e6({
         "selected": this.appState.selectedExample === example,
         "monospace": this.appState.useMonospace === true
       });
+      const styleHolder = this.styleHolder(example);
       const textDiff = typeof example.output_text_a === "string" && typeof example.output_text_b === "string" ? getTextDiff(example.output_text_a, example.output_text_b) : getTextDiff("", "");
       const renderTextString = (rawText, parsedText, searchQuery, selectedCustomFunc2) => {
         if (searchQuery !== "") {
@@ -15607,10 +15621,12 @@ th .search-field button {
             rater${example.individual_rater_scores.length > 1 ? "s" : ""}
           </div>
           ${renderHistogram}` : "";
-      const renderScore = example.score == null ? "null" : x`
+      const renderScore = example.score == null ? "Null" : x`
+        <div class="score-holder" style=${styleHolder}>
           <div class="score-number">${example.score.toFixed(2)}</div>
           ${scoreDescription}
-          ${raterInfoLink}`;
+          ${raterInfoLink}
+        </div>`;
       const styleScore = e6({
         "score": true,
         "clickable": true,
@@ -15661,7 +15677,6 @@ th .search-field button {
         )] || Array)[modelIndex],
         selectedCustomFunc
       ) : x``;
-      const styleHolder = this.styleHolder(example);
       const renderCustomField = (field, columnIndex) => {
         if (field.type === "per_rating_per_model_category" /* PER_RATING_PER_MODEL_CATEGORY */) {
           return this.renderPerRatingPerModelCategoryField(rowIndex, columnIndex);
@@ -15968,7 +15983,12 @@ th .search-field button {
   ], ExampleTableElement);
 
   // client/components/metrics_by_slice.css
-  var styles9 = i`th.score-avg {
+  var styles9 = i`thead {
+  position: sticky;
+  top: 0;
+}
+
+th.score-avg {
   width: 98px;  /* width sum for score-avg-number and score-avg-chart */
 }
 
@@ -16081,9 +16101,9 @@ rect.bar.win-rate-result-tie {
   fill: var(--comparator-grey-400);
 }
 
-.collapsed {
+.collapsed .table-container {
   max-height: 220px;
-  overflow-y: hidden;
+  overflow-y: scroll;
 }
 
 line.middle-point-vertical {
@@ -16240,6 +16260,7 @@ circle {
         return value - baseValue < 0 && intervalLeft - baseValue < 0 && intervalRight - baseValue < 0;
       }
     }
+    // Render a confidence interval chart for average scores.
     renderScoreConfIntervalChart(avgScore, intervalLeft, intervalRight) {
       if (avgScore == null) {
         return x`<svg
@@ -16335,6 +16356,7 @@ circle {
       <div class="score-avg-chart">${renderScoreConfIntervalChart}</div>
     </div>`;
     }
+    // Render a win rate chart using a stacked percentage bar chart.
     renderWinRateChart(winRate, entry, intervalLeft, intervalRight) {
       const styleElement = (className) => e6({
         "win-rate-point": className === "win-rate-point",
@@ -16553,7 +16575,7 @@ circle {
 }
 
 th.remove {
-  width: 32px;
+  width: 26px;
 }
 
 text.bar-count-text {
@@ -16780,8 +16802,7 @@ td.remove {
         <div class="component-content-top">
           <div class="description">
             What are some clusters of the rationales used by the rater
-            when it thinks
-            ${this.sortColumn === "A" || this.sortColumn === "B" ? `${this.sortColumn}` : "either A or B"} is better?
+            when it thinks A or B is better?
           </div>
         </div>
         <div class="table-container">
@@ -20893,16 +20914,16 @@ mwc-switch {
         </div>
 
         ${currentSorting.column !== "None" /* NONE */ ? x`
-            <div class="toolbar-item">
-              <label>Sorted by:</label>
-              <span>
-                <strong>
-                  ${currentSorting.column === "custom attribute" /* CUSTOM_ATTRIBUTE */ ? currentSorting.customField.name : currentSorting.column}
-                  ${currentSorting.modelIndex != null ? ` for Output ${Object.values(AOrB)[currentSorting.modelIndex]}` : ""}
-                </strong>
-                ${currentSorting.order}
-              </span>
-            </div>` : ""}
+              <div class="toolbar-item">
+                <label>Sorted by:</label>
+                <span>
+                  <strong>
+                    ${currentSorting.column === "custom attribute" /* CUSTOM_ATTRIBUTE */ ? currentSorting.customField.name : currentSorting.column}
+                    ${currentSorting.modelIndex != null ? ` for Response ${Object.values(AOrB)[currentSorting.modelIndex]}` : ""}
+                  </strong>
+                  ${currentSorting.order}
+                </span>
+              </div>` : ""}
       </div>`;
     }
   };
@@ -20948,14 +20969,14 @@ mwc-switch {
           </div>
           <div class="link-icon">
             <a href=${feedbackLink} target="_blank">
-              <mwc-icon class="icon" title="Open Form">
+              <mwc-icon class="icon" title="Send Feedback">
                 feedback
               </mwc-icon>
             </a>
           </div>
           <div class="link-icon">
             <a href=${documentationLink} target="_blank">
-              <mwc-icon class="icon" title="Open project page">
+              <mwc-icon class="icon" title="Open Documentation Page">
                 help_outline
               </mwc-icon>
             </a>

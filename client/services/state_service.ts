@@ -21,7 +21,7 @@ import {computed, makeObservable, observable} from 'mobx';
 import {BUILT_IN_DEMO_FILES, DEFAULT_COLUMN_LIST, DEFAULT_HISTOGRAM_SPEC, DEFAULT_NUM_EXAMPLES_TO_DISPLAY, DEFAULT_RATIONALE_CLUSTER_SIMILARITY_THRESHOLD, DEFAULT_SORTING_CRITERIA, DEFAULT_WIN_RATE_THRESHOLD, FIELD_ID_FOR_INPUT, FIELD_ID_FOR_OUTPUT_A, FIELD_ID_FOR_OUTPUT_B, FIELD_ID_FOR_RATIONALE_LIST, FIELD_ID_FOR_RATIONALES, FIELD_ID_FOR_SCORE, FIVE_POINT_LIKERT_HISTOGRAM_SPEC, INITIAL_CUSTOM_FUNCTIONS,} from '../lib/constants';
 import type {ChartSelectionKey, CustomFieldSchema, CustomFunction, Example, Field, HistogramSpec, IndividualRating, Metadata, Model, RatingChartSelection, RationaleCluster, RationaleListItem, SortCriteria,} from '../lib/types';
 import {AOrB, ChartType, CustomFuncReturnType, DataResponse, ErrorResponse, FieldType, SortColumn, SortOrder,} from '../lib/types';
-import {compareNumbersWithNulls, compareStringsWithNulls, computeSimilaritiesBetweenVectorAndNormalizedMatrix, convertToNumber, extractTextFromTextOrSequenceChunks, getFieldIdForCustomFunc, getHistogramBinIndexFromValue, getMinAndMax, groupByAndSortKeys, groupByValues, initializeCustomFuncSelections, isPerRatingFieldType, mergeTwoArrays, normalizeVector, searchText,} from '../lib/utils';
+import {compareNumbersWithNulls, compareStringsWithNulls, convertToNumber, extractTextFromTextOrSequenceChunks, getFieldIdForCustomFunc, getHistogramBinIndexFromValue, getMinAndMax, groupByAndSortKeys, groupByValues, initializeCustomFuncSelections, isPerRatingFieldType, mergeTwoArrays, searchText,} from '../lib/utils';
 
 import {CustomFunctionService} from './custom_function_service';
 import {Service} from './service';
@@ -35,13 +35,7 @@ export class AppState extends Service {
     makeObservable(this);
   }
 
-  @observable datasetPath: string | null = null;
-  @observable isDatasetPathUploadedFile = false;
-  @observable isOpenDatasetSelectionPanel = true;
-
-  @observable targetTeam = 'app'; // app, gemini, bard, etc.
-  @observable exampleDatasetPaths: string[] = BUILT_IN_DEMO_FILES;
-
+  // Fields from data files.
   @observable
   metadata: Metadata = {
     source_path: '',
@@ -52,11 +46,27 @@ export class AppState extends Service {
   @observable examples: Example[] = [];
   @observable rationaleClusters: RationaleCluster[] = [];
 
+  // Dataset path.
+  @observable datasetPath: string|null = null;
+  @observable isDatasetPathUploadedFile = false;
+  @observable isOpenDatasetSelectionPanel = true;
+
+  @observable exampleDatasetPaths: string[] = BUILT_IN_DEMO_FILES;
+
+  // Tags.
+  @observable selectedTag: string|null = null;
+
+  // Table sorting.
   @observable currentSorting: SortCriteria = DEFAULT_SORTING_CRITERIA;
 
-  @observable selectedExample: Example | null = null;
-  @observable selectedTag: string | null = null;
+  // Example expansion (key: index). If not exists, assume false.
+  @observable isExampleExpanded: {[key: number]: boolean} = {};
+  getIsExampleExpanded(index: number): boolean {
+    return this.isExampleExpanded[index] ?? false;
+  }
 
+  // Example details.
+  @observable selectedExample: Example|null = null;
   @observable showSelectedExampleDetails = false;
   @observable exampleDetailsPanelExpanded = false;
 
@@ -75,7 +85,7 @@ export class AppState extends Service {
       DEFAULT_RATIONALE_CLUSTER_SIMILARITY_THRESHOLD;
 
   // Columns.
-  // TODO(b/315147299): Use a url service to sync the visibility state.
+  // TODO: Use a url service to sync the visibility state.
   @observable columns: Field[] = DEFAULT_COLUMN_LIST;
 
   // Charts.
@@ -88,7 +98,7 @@ export class AppState extends Service {
   // For simple bar charts, a single-item array, e.g., [null] (non-selected);
   // for grouped bar charts, a two-item array, e.g., ['sports', null]
   // (if the bar for 'sports' is selected for A; no bars are selected for B).
-  // TODO(b/315722619): Merge selection variables into one.
+  // TODO: Merge selection variables into one.
   @observable selectedBarChartValues: {[key: string]: Array<string | null>} =
     {};
 
@@ -209,8 +219,6 @@ export class AppState extends Service {
     );
   }
 
-  @observable sampleCountForCheckingRatingLevelDataAvailability = 10;
-
   // Custom functions.
   @observable customFunctions: {[key: number]: CustomFunction} = {};
 
@@ -281,7 +289,7 @@ export class AppState extends Service {
     return (
         this.columns
             .filter((field: Field) => field.type === FieldType.PER_MODEL_NUMBER)
-            // TODO(b/315388387): Will not need when custom functions are
+            // TODO: Will not need when custom functions are
             // merged.
             .filter((field: Field) => field.id.startsWith('custom_field:')));
   }
@@ -297,7 +305,7 @@ export class AppState extends Service {
                     field.type === FieldType.PER_RATING_PER_MODEL_CATEGORY,
                 )
             // Exclude custom functions
-            // TODO(b/315388387): Will not need when custom functions are
+            // TODO: Will not need when custom functions are
             // merged.
             .filter((field: Field) => field.id.startsWith('custom_field:')));
   }
@@ -489,7 +497,7 @@ export class AppState extends Service {
     return examples;
   }
 
-  // TODO(b/326139568): Merge with the side-by-side histograms.
+  // TODO: Merge with the side-by-side histograms.
   private applyHistogramFilterForCustomFuncs(
       examplesBeforeThisFilter: Example[],
       excludeId: number|null = null,
@@ -991,7 +999,9 @@ export class AppState extends Service {
     this.selectedTag = null;
     this.selectedCustomFuncId = null;
 
-    // TODO(b/315722619) Merge selection variables.
+    this.isExampleExpanded = {};
+
+    // TODO Merge selection variables.
     this.selectedHistogramBinForScores = null;
     this.selectedHistogramBinForCustomFields = {};
     this.selectedBarChartValues = {};
@@ -1035,8 +1045,7 @@ export class AppState extends Service {
       params[key] = decodeURIComponent(value);
     }
 
-    // Get results_path (and cns_path) parameter from url.
-    // The cns_path is for those who have used the older versions.
+    // Get path parameters from url.
     if (params.hasOwnProperty('results_path')) {
       const datasetPath = params['results_path'];
       // Get max examples parameter from url.
@@ -1058,9 +1067,6 @@ export class AppState extends Service {
         samplingStepSize,
         columnsToHide,
       );
-    } else if (params.hasOwnProperty('cns_path')) {
-      const datasetPath = params['cns_path'];
-      this.loadData(datasetPath, null);
     }
   }
 
@@ -1129,11 +1135,11 @@ export class AppState extends Service {
     } else {
       this.histogramSpecForScores = DEFAULT_HISTOGRAM_SPEC;
     }
-    // TODO(b/338112225): Support custom higher ranges (e.g., 5.0 to -5.0).
+    // TODO: Support custom higher ranges (e.g., 5.0 to -5.0).
   }
 
   // Add histogram spec for custom functions with return type number.
-  // TODO(b/326139568): Merge with the side-by-side histograms.
+  // TODO: Merge with the side-by-side histograms.
   private addHistogramSpecForCustomFunc(customFunc: CustomFunction) {
     if (customFunc.returnType === CustomFuncReturnType.NUMBER) {
       const fieldId = getFieldIdForCustomFunc(customFunc.id);
@@ -1258,7 +1264,7 @@ export class AppState extends Service {
     });
   }
 
-  // Load data either from the server or uploaded file.
+  // Load data either from a specified path or uploaded file.
   async loadData(
     datasetPath: string,
     fileObject: File | null = null,
@@ -1274,7 +1280,7 @@ export class AppState extends Service {
       try {
         // Load data from the uploaded file.
         const fileContent = await this.readFileContent(fileObject);
-        // TODO(b/333119821): Validate the format of the uploaded file.
+        // TODO: Validate the format of the uploaded file.
         const jsonResponse = JSON.parse(fileContent);
         dataResponse = jsonResponse as DataResponse;
       } catch (error) {
@@ -1299,7 +1305,7 @@ export class AppState extends Service {
           throw new Error(errorMessage);
         }
         if (response.status === 502) {
-          // TODO(b/316021912): Use a corp domain url.
+          // TODO: Use a corp domain url.
           const errorMessage =
               'Failed to load the dataset. The server may not exist anymore, ' +
               'possibly with updated URLs. Try opening this URL ' +
@@ -1332,7 +1338,7 @@ export class AppState extends Service {
         // Assign indices to examples.
         example.index = index;
 
-        // TODO(b/338112784): Check if all the required fields exist.
+        // TODO: Check if all the required fields exist.
 
         // Assign indices to individual ratings.
         example.individual_rater_scores.forEach(
@@ -1443,7 +1449,7 @@ export class AppState extends Service {
     this.customFieldsOfPerRatingType.forEach((ratingField: Field) => {
       // Change the key from field name to field id.
       this.examples.forEach((ex: Example) => {
-        // TODO(b/324469307): Support more per-rating types.
+        // TODO: Support more per-rating types.
         if (ratingField.type === FieldType.PER_RATING_STRING) {
           ex.individual_rater_scores.forEach((rating: IndividualRating) => {
             // Change the key from field name to field id.
@@ -1468,7 +1474,7 @@ export class AppState extends Service {
 
       // Perform group-by aggregations over ratings.
       this.examples.forEach((ex: Example) => {
-        // TODO(b/324469307): Support more per-rating types.
+        // TODO: Support more per-rating types.
         if (ratingField.type === FieldType.PER_RATING_STRING) {
           // Simply concatenate strings.
           ex.custom_fields[ratingField.id] = ex.individual_rater_scores
@@ -1537,17 +1543,12 @@ export class AppState extends Service {
       this.runCustomFunction(this.examples, customFunc);
     });
 
-    const statusMessage = `Loaded the dataset of ${
-      this.examples.length
-    } examples.${
-      this.metadata.sampling_step_size > 1
-        ? ` Because of the large size, we sampled data from every ${this.metadata.sampling_step_size} examples.`
-        : ''
-    }`;
+    const statusMessage =
+        `Loaded the dataset of ${this.examples.length} examples.`;
     this.updateStatusMessage(statusMessage, true);
 
     // Update URL.
-    // TODO(b/315147299): Create a URL service to keep URL and app in sync.
+    // TODO: Create a URL service to keep URL and app in sync.
     const url = new URL(window.location.href);
     if (this.isDatasetPathUploadedFile === false) {
       url.searchParams.set('results_path', this.datasetPath);
@@ -1656,6 +1657,7 @@ export class AppState extends Service {
     }
   }
 
+  // Remove a rationale cluster row.
   removeCluster(clusterId: number) {
     if (clusterId === this.selectedRationaleClusterId) {
       this.selectedRationaleClusterId = null;

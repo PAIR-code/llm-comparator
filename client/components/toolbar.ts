@@ -28,7 +28,7 @@ import {AppState} from '../services/state_service';
 import {styles} from './toolbar.css';
 
 /**
- * Toolbar component.
+ * Toolbar component at the top of the main table.
  */
 @customElement('comparator-toolbar')
 export class ToolbarElement extends MobxLitElement {
@@ -260,39 +260,43 @@ export class ToolbarElement extends MobxLitElement {
         <div class="toolbar-item example-count">
           <span>
             ${shownNum} displayed
-            ${filteredNum !== totalNum ?
-              html`
+            ${
+        filteredNum !== totalNum ? html`
                 of <strong>${this.appState.filteredExamples.length}</strong>
                 filtered` :
-              ''}
+                                   ''}
             (${totalNum} total)
           </span>
         </div>
 
         <div class="toolbar-item filters">
-          ${isAnyFilter === true ?
+          ${
+        isAnyFilter === true ?
             html`<label>Filters:</label> ${renderFilterChips}` :
             ''}
         </div>
 
-        ${currentSorting.column !== SortColumn.NONE ?
-          html`
-            <div class="toolbar-item">
-              <label>Sorted by:</label>
-              <span>
-                <strong>
-                  ${currentSorting.column === SortColumn.CUSTOM_ATTRIBUTE ?
+        ${
+        currentSorting.column !== SortColumn.NONE ?
+            html`
+              <div class="toolbar-item">
+                <label>Sorted by:</label>
+                <span>
+                  <strong>
+                    ${
+                currentSorting.column === SortColumn.CUSTOM_ATTRIBUTE ?
                     currentSorting.customField!.name :
                     currentSorting.column}
-                  ${currentSorting.modelIndex != null ?
-                    ` for Output ${
-                      Object.values(AOrB)[currentSorting.modelIndex]}` :
+                    ${
+                currentSorting.modelIndex != null ?
+                    ` for Response ${
+                        Object.values(AOrB)[currentSorting.modelIndex]}` :
                     ''}
-                </strong>
-                ${currentSorting.order}
-              </span>
-            </div>` :
-          ''}
+                  </strong>
+                  ${currentSorting.order}
+                </span>
+              </div>` :
+            ''}
       </div>`;
   }
 }

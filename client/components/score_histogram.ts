@@ -31,7 +31,7 @@ import {AppState} from '../services/state_service';
 import {styles} from './score_histogram.css';
 
 /**
- * Component for visualizing Autorater scores.
+ * Component for visualizing the score distribution as a histogram.
  */
 @customElement('comparator-score-histogram')
 export class ScoreHistogramElement extends MobxLitElement {

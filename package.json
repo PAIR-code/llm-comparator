@@ -5,6 +5,8 @@
     "main": "client/index.ts",
     "scripts": {
         "build": "node build.mjs",
+        "publish": "npm run build && npm run publish:website",
+        "publish:website": "cp -r ./dist/* ./docs",
         "serve": "web-dev-server --open --root-dir ./dist",
         "test": "echo \"Error: no test specified\" && exit 1"
     },

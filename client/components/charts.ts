@@ -373,7 +373,7 @@ export class ChartsElement extends MobxLitElement {
     const renderChartsForCustomFields: Array<[string, any]> =
         this.appState
             .columns
-            // TODO(b/315388387): Will not need when custom functions are
+            // TODO: Will not need when custom functions are
             // merged.
             .filter((field: Field) => field.id.startsWith('custom_field:'))
             .filter(

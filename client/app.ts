@@ -15,7 +15,6 @@
  * limitations under the License.
  */
 
-// tslint:disable:g3-no-void-expression
 // tslint:disable:no-new-decorators
 import './components/charts';
 import './components/custom_functions';
@@ -89,14 +88,14 @@ export class LlmComparatorAppElement extends MobxLitElement {
           </div>
           <div class="link-icon">
             <a href=${feedbackLink} target="_blank">
-              <mwc-icon class="icon" title="Open Form">
+              <mwc-icon class="icon" title="Send Feedback">
                 feedback
               </mwc-icon>
             </a>
           </div>
           <div class="link-icon">
             <a href=${documentationLink} target="_blank">
-              <mwc-icon class="icon" title="Open project page">
+              <mwc-icon class="icon" title="Open Documentation Page">
                 help_outline
               </mwc-icon>
             </a>

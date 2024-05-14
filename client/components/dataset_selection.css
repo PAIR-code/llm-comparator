@@ -38,8 +38,8 @@
 }
 
 .panel-instruction {
-  color: #555;
-  line-height: 16px;
+  color: var(--comparator-grey-800);
+  line-height: 18px;
   margin: 5px 0;
   padding: 2px 0;
 }

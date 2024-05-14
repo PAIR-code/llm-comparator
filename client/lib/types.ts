@@ -46,7 +46,7 @@ export interface IndividualRating {
   rating_label: string | null;
   is_flipped: boolean | null;
   rationale: string | null;
-  // TODO(b/324469307): Support more types.
+  // TODO: Support more types.
   custom_fields: {
     [key: string]: string | Array<string | null>;
   };
@@ -100,10 +100,10 @@ export interface SequenceChunk {
 // tslint:disable:enforce-name-casing
 export interface Example {
   index: number;
-  input_text: string | SequenceChunk[];
-  output_text_a: string | SequenceChunk[];
-  output_text_b: string | SequenceChunk[];
+  input_text: string|SequenceChunk[];
   tags: string[];
+  output_text_a: string|SequenceChunk[];
+  output_text_b: string|SequenceChunk[];
   score: number | null;
   individual_rater_scores: IndividualRating[];
   rationale_list: RationaleListItem[];
@@ -171,7 +171,6 @@ export interface CustomFieldSchema {
 export interface Metadata {
   source_path: string;
   custom_fields_schema: CustomFieldSchema[];
-  sampling_step_size: number;
 }
 
 /**
@@ -343,7 +342,7 @@ export interface HistogramSpec {
 /**
  * Interface for a custom field for ratings selection.
  * (only supporting per_rating_per_model_category for now)
- * TODO(b/324469307): Support more per-rating types.
+ * TODO: Support more per-rating types.
  */
 export interface RatingChartSelection {
   fieldId: string;
