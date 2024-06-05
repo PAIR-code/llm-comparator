@@ -1,0 +1,42 @@
+[build-system]
+requires = ["setuptools>=68.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "llm-comparator"
+version = "0.1"
+authors = [
+  { name="Google, LLC" }
+]
+description = "LLM Comparator: An interactive visualization tool for side-by-side LLM evaluation"
+readme = "README.md"
+license = { file = "LICENSE" }
+requires-python = ">=3.9"
+dependencies = [
+  "tqdm"
+]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Developers",
+  "Intended Audience :: Science/Research",
+  "License :: OSI Approved :: Apache Software License",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.10",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
+  "Topic :: Scientific/Engineering :: Information Analysis",
+  "Topic :: Scientific/Engineering :: Visualization",
+  "Typing :: Typed",
+]
+keywords = [
+  "model evaluation",
+  "large language models",
+  "artifical intelligence",
+  "machine learning",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/PAIR-code/llm-comparator"
+"Repository" = "https://github.com/PAIR-code/llm-comparator"
+"Bug Tracker" = "https://github.com/PAIR-code/llm-comparator/issues"
+"Demo" = "https://pair-code.github.io/llm-comparator/"
