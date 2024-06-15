@@ -2,18 +2,18 @@
 
 from collections.abc import Sequence
 import math
-import re
 from typing import Optional
-import xml.etree.ElementTree as ET
 
 from llm_comparator import model_helper
 from llm_comparator import types
+from llm_comparator import utils
+
 
 _IndividualRating = types.IndividualRating
 _JsonDict = types.JsonDict
 _LLMJudgeInput = types.LLMJudgeInput
 _LLMJudgeOutput = types.LLMJudgeOutput
-_ModelHelper = model_helper.ModelHelper
+_GenerationModelHelper = model_helper.GenerationModelHelper
 
 
 DEFAULT_LLM_JUDGE_PROMPT_TEMPLATE = """You will be given a user question and two responses, Response A and Response B, provided by two AI assistants.
@@ -70,7 +70,7 @@ class LLMJudgeRunner:
 
   def __init__(
       self,
-      generation_model_helper: _ModelHelper,
+      generation_model_helper: _GenerationModelHelper,
       llm_judge_prompt_template: str = DEFAULT_LLM_JUDGE_PROMPT_TEMPLATE,
       rating_to_score_map: Optional[dict[str, float]] = None,
   ):
@@ -96,8 +96,8 @@ class LLMJudgeRunner:
     return prompt_for_judge
 
   def create_inputs_with_repeats_for_judge(
-      self, inputs: list[_LLMJudgeInput], num_repeats: int
-  ) -> list[_JsonDict]:
+      self, inputs: Sequence[_LLMJudgeInput], num_repeats: int
+  ) -> Sequence[_JsonDict]:
     """Creates inputs with repeated runs for LLM Judge."""
     inputs_with_repeats = []
     for index, ex in enumerate(inputs):
@@ -124,7 +124,7 @@ class LLMJudgeRunner:
     print(f'Created {len(inputs_with_repeats)} inputs for LLM judge.')
     return inputs_with_repeats
 
-  def run_query(self, inputs: Sequence[_JsonDict]) -> list[str]:
+  def run_query(self, inputs: Sequence[_JsonDict]) -> Sequence[str]:
     """Runs LLM judge."""
     judge_inputs = [
         self.create_prompt_for_judge(
@@ -141,26 +141,25 @@ class LLMJudgeRunner:
       self,
       outputs_from_judge: Sequence[str],
       inputs_for_judge: Sequence[_JsonDict],
-  ) -> list[_IndividualRating]:
+  ) -> Sequence[Sequence[_IndividualRating]]:
     """Parses XML-formatted LLM judge outputs."""
 
     def parse_output(raw_output: str):
       # Find parts where <result> is in the XML-formatted output.
-      xml_output = re.search(
-          r'<result>(.*?)</result>', raw_output, flags=re.DOTALL
-      )
-      if not xml_output:
-        print('Invalid output with missing <result> tags')
+      parsed_xml = utils.extract_xml_part(raw_output, 'result')
+      if not parsed_xml:
         return None
 
-      try:
-        parsed_xml = ET.fromstring(xml_output.group(0))
-      except ET.ParseError as e:
-        print(f'Invalid format: {e} ({xml_output})')
+      if (rationale := parsed_xml.find('explanation')) is None:
+        return None
+      if (rationale := rationale.text) is None:
         return None
 
-      rationale = parsed_xml.find('explanation').text
-      rating_label = parsed_xml.find('verdict').text
+      if (rating_label := parsed_xml.find('verdict')) is None:
+        return None
+      if (rating_label := rating_label.text) is None:
+        return None
+
       score = self.rating_to_score_map[rating_label]
       return (score, rating_label, rationale.strip(' \n'))
 
@@ -185,19 +184,19 @@ class LLMJudgeRunner:
 
   def postprocess_results(
       self, example_ratings: Sequence[Sequence[_IndividualRating]]
-  ) -> list[_LLMJudgeOutput]:
-    results = []
+  ) -> Sequence[_LLMJudgeOutput]:
+    results: list[_LLMJudgeOutput] = []
     for ratings in example_ratings:
       score = sum([rating['score'] for rating in ratings]) / len(ratings)
       results.append({
           'score': score,
-          'individual_ratings': ratings,
+          'individual_rater_scores': list(ratings),
       })
     return results
 
   def run(
       self, inputs: Sequence[_LLMJudgeInput], num_repeats=6
-  ) -> list[_LLMJudgeOutput]:
+  ) -> Sequence[_LLMJudgeOutput]:
     """Runs the LLM judge pipeline."""
     input_list_for_judge = self.create_inputs_with_repeats_for_judge(
         inputs, num_repeats

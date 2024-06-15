@@ -22,7 +22,16 @@ class LLMJudgeInput(TypedDict):
 
 class LLMJudgeOutput(TypedDict):
   score: float
-  individual_ratings: list[IndividualRating] = []
+  individual_rater_scores: list[IndividualRating] = []
+
+
+class RationaleBullet(TypedDict):
+  rationale: str
+
+
+class RationaleBulletWithClusterSimilarity(TypedDict):
+  rationale: str
+  similarities: list[float]
 
 
 class Example(TypedDict):
@@ -32,4 +41,11 @@ class Example(TypedDict):
   output_text_b: str
   score: Optional[float] = None
   individual_rater_scores: list[IndividualRating] = []
+  rationale_list: list[
+      RationaleBullet | RationaleBulletWithClusterSimilarity
+  ] = []
   custom_fields: JsonDict = {}
+
+
+class RationaleCluster(TypedDict):
+  title: str
