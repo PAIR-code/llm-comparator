@@ -19,7 +19,7 @@ class _BulletGeneratorInput(TypedDict):
   """Intermediate output for rationale bullet generator."""
 
   selected_rationales: list[str]
-  ex_win_side: Literal['A', 'B']
+  ex_win_side: Optional[Literal['A', 'B']]
 
 
 class RationaleBulletGenerator:
@@ -80,29 +80,27 @@ class RationaleBulletGenerator:
       elif ex_score < b_wins_score:
         ex_win_side = 'B'
       else:
-        raise ValueError(
-            f'No winner for example with score: {ex_score}. For A to win, score'
-            f' > {a_wins_score}. For B to win, score < {b_wins_score}.'
-        )
+        ex_win_side = None
 
       # Select rationales for ratings whose winners are the same as the winner
       # for the example.
       winners_rationales = []
-      for rating in ex['individual_rater_scores']:
-        # Rewrite rationales for flipped cases.
-        rating['rationale'] = self._rewrite_flipped_ratings(
-            rating['rationale'], rating['is_flipped']
-        )
+      if ex_win_side is not None:
+        for rating in ex['individual_rater_scores']:
+          # Rewrite rationales for flipped cases.
+          rating['rationale'] = self._rewrite_flipped_ratings(
+              rating['rationale'], rating['is_flipped']
+          )
 
-        if rating['score'] > a_wins_score:
-          rating_win_side = 'A'
-        elif rating['score'] < b_wins_score:
-          rating_win_side = 'B'
-        else:
-          continue
+          if rating['score'] > a_wins_score:
+            rating_win_side = 'A'
+          elif rating['score'] < b_wins_score:
+            rating_win_side = 'B'
+          else:
+            continue
 
-        if ex_win_side == rating_win_side:
-          winners_rationales.append(rating['rationale'])
+          if ex_win_side == rating_win_side:
+            winners_rationales.append(rating['rationale'])
 
       inputs_for_generating_bullets.append({
           'selected_rationales': winners_rationales,
@@ -169,12 +167,15 @@ class RationaleBulletGenerator:
     rationale_bullets_for_examples = []
     for input_for_generation in tqdm.auto.tqdm(inputs_for_generating_bullets):
       # Run LLMs to summarize several rationales into a set of short phrases.
-      output = self._generate_rationale_bullets_for_example(
-          input_for_generation['selected_rationales'],
-          input_for_generation['ex_win_side'],
-      )
+      if input_for_generation['ex_win_side']:
+        output = self._generate_rationale_bullets_for_example(
+            input_for_generation['selected_rationales'],
+            input_for_generation['ex_win_side'],
+        )
 
-      bullets = self._parse_xml_formatted_rationale_bullets(output)
+        bullets = self._parse_xml_formatted_rationale_bullets(output)
+      else:
+        bullets = []
       rationale_bullets_for_examples.append(bullets)
 
     print('Done generating rationale bullets')

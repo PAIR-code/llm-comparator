@@ -12,7 +12,6 @@ from llm_comparator import types
 from llm_comparator import utils
 
 
-_RationaleBullet = types.RationaleBullet
 _RationaleBulletWithClusterSimilarity = (
     types.RationaleBulletWithClusterSimilarity
 )
@@ -34,13 +33,13 @@ class RationaleClusterGenerator:
     self._embedder = emb_model_helper
 
   def _flatten_rationales(
-      self, rationale_bullets_for_examples: Sequence[Sequence[_RationaleBullet]]
+      self, rationale_bullets_for_examples: Sequence[Sequence[str]]
   ) -> Sequence[str]:
     """Flatten rationale bullets and remove duplicates."""
     flattened_rationales = []
     for rationale_bullets_for_example in rationale_bullets_for_examples:
-      for bullet in rationale_bullets_for_example:
-        flattened_rationales.append(bullet['rationale'])
+      for rationale in rationale_bullets_for_example:
+        flattened_rationales.append(rationale)
     return list(set(flattened_rationales))
 
   def _paraphrase_rationales(
@@ -136,7 +135,7 @@ class RationaleClusterGenerator:
     )
 
     output = self._generator.predict(
-        prompt_for_clustering, temperatue=temperature_for_clustering
+        prompt_for_clustering, temperature=temperature_for_clustering
     )
 
     output_parsed = utils.extract_xml_part(output, 'groups')
@@ -185,15 +184,14 @@ class RationaleClusterGenerator:
 
   def _store_similarities_to_rationale_bullets(
       self,
-      rationale_bullets_for_examples: Sequence[Sequence[_RationaleBullet]],
+      rationale_bullets_for_examples: Sequence[Sequence[str]],
       similarities_for_rationales: Mapping[str, Sequence[float]],
   ) -> Sequence[Sequence[_RationaleBulletWithClusterSimilarity]]:
     """Store similarities to bullets by iterating over the nested lists."""
     rationale_bullets_with_similarities = []
     for rationale_bullets_for_example in rationale_bullets_for_examples:
       rationale_bullets_with_similarities_for_example = []
-      for bullet in rationale_bullets_for_example:
-        rationale = bullet['rationale']
+      for rationale in rationale_bullets_for_example:
         similarities = similarities_for_rationales[rationale]
         rationale_bullets_with_similarities_for_example.append(
             _RationaleBulletWithClusterSimilarity(
@@ -210,7 +208,7 @@ class RationaleClusterGenerator:
 
   def run(
       self,
-      rationale_bullets_for_examples: Sequence[Sequence[_RationaleBullet]],
+      rationale_bullets_for_examples: Sequence[Sequence[str]],
       num_clusters: int = 10,
   ) -> tuple[
       Sequence[_RationaleCluster],
