@@ -9,11 +9,15 @@ from vertexai import generative_models
 from vertexai import language_models
 import tqdm.auto
 
+from llm_comparator import _logging
+
 
 MAX_NUM_RETRIES = 5
 DEFAULT_MAX_OUTPUT_TOKENS = 256
 
 BATCH_EMBED_SIZE = 100
+
+_logger = _logging.logger
 
 
 class GenerationModelHelper(abc.ABC):
@@ -58,9 +62,9 @@ class VertexGenerationModelHelper(GenerationModelHelper):
         )
       except Exception as e:  # pylint: disable=broad-except
         if 'quota' in str(e):
-          print('\033[31mQuota limit exceeded\033[0m')
+          _logger.info('\033[31mQuota limit exceeded.\033[0m')
         wait_time = 2**num_attempts
-        print(f'\033[31mWaiting {wait_time}s to retry...\033[0m')
+        _logger.info('\033[31mWaiting %ds to retry...\033[0m', wait_time)
         time.sleep(2**num_attempts)
 
     if isinstance(prediction, Iterable):
@@ -111,8 +115,9 @@ class VertexEmbeddingModelHelper(EmbeddingModelHelper):
       try:
         embeddings = self.model.get_embeddings(texts)
       except Exception as e:  # pylint: disable=broad-except
-        print(f'Waiting to retry... ({e})')
-        time.sleep(2**num_attempts)
+        wait_time = 2**num_attempts
+        _logger.info('Waiting %ds to retry... (%s)', wait_time, e)
+        time.sleep(wait_time)
 
     if embeddings is None:
       return []

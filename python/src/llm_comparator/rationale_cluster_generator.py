@@ -6,6 +6,7 @@ from typing import Mapping, Sequence
 import numpy as np
 import tqdm.auto
 
+from llm_comparator import _logging
 from llm_comparator import model_helper
 from llm_comparator import prompt_templates
 from llm_comparator import types
@@ -18,6 +19,7 @@ _RationaleBulletWithClusterSimilarity = (
 _RationaleCluster = types.RationaleCluster
 _GenerationModelHelper = model_helper.GenerationModelHelper
 _EmbeddingModelHelper = model_helper.EmbeddingModelHelper
+_logger = _logging.logger
 
 
 class RationaleClusterGenerator:
@@ -56,7 +58,7 @@ class RationaleClusterGenerator:
           temperature=temperature_for_paraphrasing,
       )
 
-    print('Start paraphrasing rationale bullets.')
+    _logger.info('Start paraphrasing rationale bullets.')
     paraphrased_rationales = {}
     for rationale in tqdm.auto.tqdm(rationales):
       output = _generate_paraphrased_rationale(rationale)
@@ -70,7 +72,7 @@ class RationaleClusterGenerator:
             if phrase.text
         ]
 
-    print('Done paraphrasing rationales.')
+    _logger.info('Done paraphrasing rationales.')
     return paraphrased_rationales
 
   def _embed_rationales(
@@ -79,7 +81,7 @@ class RationaleClusterGenerator:
     """Embed rationales by taking the average of the embeddings of paraphrases."""
     rationales_with_embeddings = {}
 
-    print('Start computing embeddings.')
+    _logger.info('Start computing embeddings.')
     for rationale, paraphrased_list in tqdm.auto.tqdm(
         paraphrased_rationales.items()
     ):
@@ -88,7 +90,7 @@ class RationaleClusterGenerator:
       avg_embedding = np.mean(np.array(embeddings), axis=0)
       rationales_with_embeddings[rationale] = avg_embedding
 
-    print('Done computing embeddings.')
+    _logger.info('Done computing embeddings.')
     return rationales_with_embeddings
 
   def _generate_cluster_titles(
@@ -146,7 +148,7 @@ class RationaleClusterGenerator:
           item.text for item in output_parsed.findall('group') if item.text
       ][:num_clusters]
 
-    print('Done generating cluster titles.')
+    _logger.info('Done generating cluster titles.')
     return cluster_titles
 
   def _embed_cluster_titles(
@@ -203,7 +205,7 @@ class RationaleClusterGenerator:
           rationale_bullets_with_similarities_for_example
       )
 
-    print('Done assigning cluster similarities to rationales.')
+    _logger.info('Done assigning cluster similarities to rationales.')
     return rationale_bullets_with_similarities
 
   def run(

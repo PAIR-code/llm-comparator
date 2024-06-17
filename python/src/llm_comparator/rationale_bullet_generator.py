@@ -5,6 +5,7 @@ from typing import Literal, Optional, TypedDict
 
 import tqdm.auto
 
+from llm_comparator import _logging
 from llm_comparator import model_helper
 from llm_comparator import prompt_templates
 from llm_comparator import types
@@ -13,6 +14,8 @@ from llm_comparator import utils
 
 _LLMJudgeOutput = types.LLMJudgeOutput
 _GenerationModelHelper = model_helper.GenerationModelHelper
+
+_logger = _logging.logger
 
 
 class _BulletGeneratorInput(TypedDict):
@@ -107,7 +110,7 @@ class RationaleBulletGenerator:
           'ex_win_side': ex_win_side,
       })
 
-    print('Done preparing inputs for generating bullets.')
+    _logger.info('Done preparing inputs for generating bullets.')
     return inputs_for_generating_bullets
 
   def _parse_xml_formatted_rationale_bullets(
@@ -160,9 +163,9 @@ class RationaleBulletGenerator:
     Returns:
       List of bulleted lists.
     """
-    print(
-        'Start generating rationale bullets for '
-        f'{len(inputs_for_generating_bullets)} examples.'
+    _logger.info(
+        'Start generating rationale bullets for %d examples',
+        len(inputs_for_generating_bullets),
     )
     rationale_bullets_for_examples = []
     for input_for_generation in tqdm.auto.tqdm(inputs_for_generating_bullets):
@@ -178,7 +181,7 @@ class RationaleBulletGenerator:
         bullets = []
       rationale_bullets_for_examples.append(bullets)
 
-    print('Done generating rationale bullets')
+    _logger.info('Done generating rationale bullets')
     return rationale_bullets_for_examples
 
   def run(

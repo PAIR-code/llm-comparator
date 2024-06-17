@@ -4,6 +4,7 @@ from collections.abc import Sequence
 import math
 from typing import Optional
 
+from llm_comparator import _logging
 from llm_comparator import model_helper
 from llm_comparator import types
 from llm_comparator import utils
@@ -14,6 +15,8 @@ _JsonDict = types.JsonDict
 _LLMJudgeInput = types.LLMJudgeInput
 _LLMJudgeOutput = types.LLMJudgeOutput
 _GenerationModelHelper = model_helper.GenerationModelHelper
+
+_logger = _logging.logger
 
 
 DEFAULT_LLM_JUDGE_PROMPT_TEMPLATE = """You will be given a user question and two responses, Response A and Response B, provided by two AI assistants.
@@ -121,7 +124,7 @@ class LLMJudgeRunner:
             'response_b': ex['response_a'],
             'is_flipped': True,
         })
-    print(f'Created {len(inputs_with_repeats)} inputs for LLM judge.')
+    _logger.info('Created %d inputs for LLM judge.', len(inputs_with_repeats))
     return inputs_with_repeats
 
   def run_query(self, inputs: Sequence[_JsonDict]) -> Sequence[str]:
@@ -133,7 +136,7 @@ class LLMJudgeRunner:
         for input in inputs
     ]
     judge_outputs = self.generation_model_helper.predict_batch(judge_inputs)
-    print(f'Generated {len(judge_outputs)} outputs from LLM judge.')
+    _logger.info('Generated %d outputs from LLM judge.', len(judge_outputs))
     return judge_outputs
 
   # TODO(b/344919097): Add some unit tests.
@@ -163,7 +166,9 @@ class LLMJudgeRunner:
       try:
         score = self.rating_to_score_map[rating_label]
       except KeyError:
-        print(f'LLM judge returned an unknown rating label: {rating_label}')
+        _logger.error(
+            'LLM judge returned an unknown rating label: %s}', rating_label
+        )
         return None
       return (score, rating_label, rationale.strip(' \n'))
 
@@ -183,7 +188,7 @@ class LLMJudgeRunner:
             'rating_label': parsed_output[1],
             'rationale': parsed_output[2],
         })
-    print(f'Parsed {len(example_ratings)} example ratings.')
+    _logger.info('Parsed %d example ratings.', len(example_ratings))
     return example_ratings
 
   def postprocess_results(
@@ -210,5 +215,5 @@ class LLMJudgeRunner:
         outputs_from_judge, input_list_for_judge
     )
     scores_and_ratings = self.postprocess_results(example_ratings)
-    print(f'Generated ratings for {len(scores_and_ratings)} examples.')
+    _logger.info('Generated ratings for %d examples.', len(scores_and_ratings))
     return scores_and_ratings

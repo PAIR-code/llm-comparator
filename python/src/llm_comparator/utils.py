@@ -4,7 +4,12 @@ from collections.abc import Sequence
 import re
 from typing import Optional
 import xml.etree.ElementTree as ET
+
 import numpy as np
+
+from llm_comparator import _logging
+
+_logger = _logging.logger
 
 
 def extract_xml_part(raw_output: str, tag_name: str) -> Optional[ET.Element]:
@@ -13,14 +18,14 @@ def extract_xml_part(raw_output: str, tag_name: str) -> Optional[ET.Element]:
       rf'<{tag_name}>(.*?)</{tag_name}>', raw_output, flags=re.DOTALL
   )
   if not xml_output:
-    print(f'Invalid output with missing <{tag_name}> tags')
+    _logger.warning('Invalid output with missing <%s> tags', tag_name)
     return None
 
   try:
     parsed_xml = ET.fromstring(xml_output.group(0))
     return parsed_xml
   except ET.ParseError as e:
-    print(f'Invalid format: {e} ({xml_output})')
+    _logger.warning('Invalid format: %s (%s)', e, xml_output)
     return None
 
 
