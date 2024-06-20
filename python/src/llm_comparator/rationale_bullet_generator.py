@@ -36,8 +36,8 @@ class RationaleBulletGenerator:
     self._generator = gen_model_helper
 
   def _rewrite_flipped_ratings(
-      self, rationale: str, is_flipped: Optional[bool] = False
-  ) -> str:
+      self, rationale: Optional[str], is_flipped: Optional[bool] = False
+  ) -> Optional[str]:
     if not rationale:
       return rationale
     if is_flipped:
@@ -85,16 +85,17 @@ class RationaleBulletGenerator:
       else:
         ex_win_side = None
 
+      # Rewrite rationales for flipped cases.
+      for rating in ex['individual_rater_scores']:
+        rating['rationale'] = self._rewrite_flipped_ratings(
+            rating['rationale'], rating['is_flipped']
+        )
+
       # Select rationales for ratings whose winners are the same as the winner
       # for the example.
       winners_rationales = []
       if ex_win_side is not None:
         for rating in ex['individual_rater_scores']:
-          # Rewrite rationales for flipped cases.
-          rating['rationale'] = self._rewrite_flipped_ratings(
-              rating['rationale'], rating['is_flipped']
-          )
-
           if rating['score'] > a_wins_score:
             rating_win_side = 'A'
           elif rating['score'] < b_wins_score:
@@ -103,12 +104,14 @@ class RationaleBulletGenerator:
             continue
 
           if ex_win_side == rating_win_side:
-            winners_rationales.append(rating['rationale'])
+            winners_rationales.append(rating['rationale'] or '')
 
-      inputs_for_generating_bullets.append({
-          'selected_rationales': winners_rationales,
-          'ex_win_side': ex_win_side,
-      })
+      inputs_for_generating_bullets.append(
+          _BulletGeneratorInput(
+              selected_rationales=winners_rationales,
+              ex_win_side=ex_win_side,
+          )
+      )
 
     _logger.info('Done preparing inputs for generating bullets.')
     return inputs_for_generating_bullets
