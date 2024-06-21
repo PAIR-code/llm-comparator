@@ -40,3 +40,10 @@ keywords = [
 "Repository" = "https://github.com/PAIR-code/llm-comparator"
 "Bug Tracker" = "https://github.com/PAIR-code/llm-comparator/issues"
 "Demo" = "https://pair-code.github.io/llm-comparator/"
+
+[tool.setuptools.packages.find]
+namespaces = true
+where = ["src"]
+
+[tool.setuptools.package-data]
+"*" = ["*.html", "*.js", "*.svg"]
