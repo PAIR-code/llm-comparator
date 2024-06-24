@@ -1,7 +1,21 @@
+# Copyright 2024 Google LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+# ==============================================================================
 """Runner for creating rationale clusters for LLM Comparator."""
 
+from collections.abc import Mapping, Sequence
 import random
-from typing import Mapping, Sequence
 
 import numpy as np
 import tqdm.auto
@@ -23,7 +37,7 @@ _logger = _logging.logger
 
 
 class RationaleClusterGenerator:
-  """Runner for rationale cluster generation."""
+  """Runner for generating labeled clusters using embedding similarity."""
 
   def __init__(
       self,
@@ -216,15 +230,17 @@ class RationaleClusterGenerator:
       Sequence[_RationaleCluster],
       Sequence[Sequence[_RationaleBulletWithClusterSimilarity]],
   ]:
-    """Generating rationale clusters.
+    """Generate clusters of similar rationale bullets.
 
     Args:
-      rationale_bullets_for_examples: Rationale bullets.
-      num_clusters: Number of clusters.
+      rationale_bullets_for_examples: The rationale bullets from a
+        llm_comparator.rationale_bullet_generator.RationaleBulletGenerator that
+        will be clustered.
+      num_clusters: The number of clusters to generate.
 
     Returns:
-      List of clusters and rationale_bullets augmented with similarities to
-      clusters for dynamic assignments from the client.
+      A tuple of index-aligned lists of clusters and rationale_bullets augmented
+      with similarities to clusters for dynamic assignments from the client.
     """
     # Flatten rationales.
     flattened_rationales = self._flatten_rationales(
