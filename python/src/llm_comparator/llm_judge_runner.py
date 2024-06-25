@@ -20,6 +20,7 @@ from typing import Optional
 
 from llm_comparator import _logging
 from llm_comparator import model_helper
+from llm_comparator import prompt_templates
 from llm_comparator import types
 from llm_comparator import utils
 
@@ -32,44 +33,6 @@ _GenerationModelHelper = model_helper.GenerationModelHelper
 
 _logger = _logging.logger
 
-
-DEFAULT_LLM_JUDGE_PROMPT_TEMPLATE = """You will be given a user question and two responses, Response A and Response B, provided by two AI assistants.
-Your task is to act as a judge by determining which response is answering the user's question better.
-
-When you are evaluating, you can consider the following criteria:
-- Does the response fully answer the user's question?
-- Does the response address the key points in the question?
-- Is the response clearly written and avoiding unnecessary information?
-- Is the response creative, especially when the question is asking for generating creative content?
-- Does the response contain factual information?
-- Does the response NOT contain any harmful, unsafe, dangerous, or sexually explicit content?
-- Does the response refuse to answer to the question that asks for harmful, unsafe, dangerous, or sexually explicit content?
-
-You will provide a short explanation and your final rating (verdict) in the following XML format.
-
-<result>
-  <explanation>YOUR EXPLANATION GOES HERE.</explanation>
-  <verdict>A is slightly better</verdict>
-</result>
-
-Your explanation can compare the two responses and describe your rationale behind the rating.
-It should be about two or three sentences.
-Your final rating (verdict) must be in 7-point Likert and must be exactly one of the following:
-['A is much better', 'A is better', 'A is slightly better', 'same', 'B is slightly better', 'B is better', 'B is much better'].
-
-[User Question]
-{prompt}
-
-[The Start of Response A]
-{response_a}
-[The End of Response A]
-
-[The Start of Response B]
-{response_b}
-[The End of Response B]
-
-[Result with explanation and verdict in the above XML format]
-"""
 
 DEFAULT_RATING_TO_SCORE_MAP = {
     'A is much better': 1.5,
@@ -88,7 +51,7 @@ class LLMJudgeRunner:
   def __init__(
       self,
       generation_model_helper: _GenerationModelHelper,
-      llm_judge_prompt_template: str = DEFAULT_LLM_JUDGE_PROMPT_TEMPLATE,
+      llm_judge_prompt_template: str = prompt_templates.DEFAULT_LLM_JUDGE_PROMPT_TEMPLATE,
       rating_to_score_map: Optional[dict[str, float]] = None,
   ):
     """Initializes the LLM judge runner.
