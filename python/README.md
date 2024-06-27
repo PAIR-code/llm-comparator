@@ -120,7 +120,7 @@ generate the clustered summary of rationale bullets.
 
 The primary configuration is the `num_clusters=` parameter, which can be
 configured per-comparative evaluation run via the `clusterer_opts=` dictionary
-passed to `llm_comparator.comparison.run()`. By default, a clusterer creates 10
+passed to `llm_comparator.comparison.run()`. By default, a clusterer creates 8
 clusters from the bullets.
 
 ## Basic Usage

@@ -1,7 +1,8 @@
 {
-    "name": "llm_comparator",
+    "name": "llm-comparator",
     "version": "1.0.0",
     "description": "Side-by-side comparisons of LLM performance",
+    "repository": "github:PAIR-code/llm-comparator",
     "main": "client/index.ts",
     "scripts": {
         "build": "node build.mjs",
