@@ -58,8 +58,13 @@ files for use with the LLM Comparator visualization. This package can create the
 entire JSON file, including side-by-side LLM-based evaluation and rationale
 clusters, given a set of input prompts to run and models to run them on. Or, if
 a user already has prompts and an existing set of model outputs, it can perform
-just the rationale clustering steps. For more details, see the
+just the rationale clustering steps. You can simply run a notebook to create a
+JSON file and see the results at
+[basic_demo.ipynb](python/notebooks/basic_demo.ipynb).
+For more details, see the
 [Python library README](python/README.md).
+
+![Quick demo of running Colab for running the Python library](documentation/images/llm_comparator_python_colab_demo.gif)
 
 
 ## JSON Data Format
