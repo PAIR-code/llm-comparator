@@ -133,7 +133,7 @@ th.custom-per-model-number {
 }
 
 th.custom-per-model-category {
-  min-width: 120px;
+  min-width: 160px;
 }
 
 th.custom-per-rating-string {
@@ -166,6 +166,8 @@ td.custom-category,
 td.custom-text,
 td.custom-url,
 td.custom-image,
+td.custom-per-model-category,
+td.custom-per-model-text,
 td.custom-per-rating-string,
 td.custom-per-rating-per-model-category {
   padding: 0 0 0 12px;
@@ -273,6 +275,11 @@ ul.rationale-list li.cluster-selected::before {
 .text-holder {
   overflow-wrap: anywhere;
   white-space: break-spaces;
+}
+
+.custom-per-model-text
+.text-holder {
+  width: 240px;
 }
 
 .sequence-chunks-holder {
@@ -404,7 +411,9 @@ td.custom-per-model-last {
 /* Set scrollbar as optional */
 td.custom-string .text-holder,
 td.custom-category .text-holder,
-td.custom-url .text-holder {
+td.custom-url .text-holder,
+td.custom-per-model-category .text-holder,
+td.custom-per-model-text .text-holder {
   overflow-y: auto;
 }
 

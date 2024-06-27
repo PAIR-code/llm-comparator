@@ -406,10 +406,10 @@ export function getFieldIdForCustomFunc(customFuncId: number) {
  */
 export function isPerModelFieldType(field: Field) {
   return (
-    field.type === FieldType.PER_MODEL_BOOLEAN ||
-    field.type === FieldType.PER_MODEL_NUMBER ||
-    field.type === FieldType.PER_MODEL_CATEGORY
-  );
+      field.type === FieldType.PER_MODEL_BOOLEAN ||
+      field.type === FieldType.PER_MODEL_NUMBER ||
+      field.type === FieldType.PER_MODEL_CATEGORY ||
+      field.type === FieldType.PER_MODEL_TEXT);
 }
 
 /**

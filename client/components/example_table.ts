@@ -58,18 +58,18 @@ export class ExampleTableElement extends MobxLitElement {
       'custom-category': field.type === FieldType.CATEGORY,
       'custom-text': field.type === FieldType.TEXT,
       'custom-url': field.type === FieldType.URL,
-      'custom-image':
-        field.type === FieldType.IMAGE_PATH ||
-        field.type === FieldType.IMAGE_BYTE,
+      'custom-image': field.type === FieldType.IMAGE_PATH ||
+          field.type === FieldType.IMAGE_BYTE,
       'custom-per-model': isPerModelFieldType(field) === true,
       'custom-per-model-boolean': field.type === FieldType.PER_MODEL_BOOLEAN,
       'custom-per-model-number': field.type === FieldType.PER_MODEL_NUMBER,
       'custom-per-model-category': field.type === FieldType.PER_MODEL_CATEGORY,
+      'custom-per-model-text': field.type === FieldType.PER_MODEL_TEXT,
       'custom-per-model-first': modelIndex === 0,
       'custom-per-model-last': modelIndex === this.appState.models.length - 1,
       'custom-per-rating-string': field.type === FieldType.PER_RATING_STRING,
       'custom-per-rating-per-model-category':
-        field.type === FieldType.PER_RATING_PER_MODEL_CATEGORY,
+          field.type === FieldType.PER_RATING_PER_MODEL_CATEGORY,
     });
   }
 
@@ -89,14 +89,14 @@ export class ExampleTableElement extends MobxLitElement {
     </div>`;
   }
 
-  private styleHolder(example: Example) {
+  private styleHolder(exampleIndex: number) {
     return styleMap({
-      'height': this.appState.getIsExampleExpanded(example.index) !== true ?
+      'height': this.appState.getIsExampleExpanded(exampleIndex) !== true ?
           `${
               this.appState.numberOfLinesPerOutputCell *
               LINE_HEIGHT_IN_CELL}px` :
           'auto',
-      'min-height': this.appState.getIsExampleExpanded(example.index) === true ?
+      'min-height': this.appState.getIsExampleExpanded(exampleIndex) === true ?
           `${
               this.appState.numberOfLinesPerOutputCell *
               LINE_HEIGHT_IN_CELL}px` :
@@ -105,18 +105,34 @@ export class ExampleTableElement extends MobxLitElement {
   }
 
   private renderPerModelField(
-    values: boolean[] | number[] | string[],
-    field: Field,
+      values: boolean[]|number[]|string[],
+      field: Field,
+      exampleIndex: number,
   ) {
     if (values.length !== 2) {
       throw new Error('Per-model fields must have exactly 2 values.');
     } else {
-      const cells = values.map(
-        (value, modelIndex) =>
-          html` <td class=${this.styleCustomField(field, modelIndex)}>
-            ${typeof value === 'number' ? toFixedIfNeeded(value) : value}
-          </td>`,
-      );
+      const cells = values.map((value, modelIndex) => {
+        const renderValue = () => {
+          // TDOO(b/348680044): Remove category from the if clause.
+          if (field.type === FieldType.PER_MODEL_NUMBER ||
+              field.type === FieldType.PER_MODEL_BOOLEAN ||
+              field.type === FieldType.PER_MODEL_CATEGORY) {
+            if (typeof value === 'number') {
+              return toFixedIfNeeded(value);
+            } else {
+              return value;
+            }
+          } else {
+            const styleHolder = this.styleHolder(exampleIndex);
+            return html`<div class="text-holder" style=${styleHolder}>${
+                value}</div>`;
+          }
+        };
+        return html` <td class=${this.styleCustomField(field, modelIndex)}>
+              ${renderValue()}
+            </td>`;
+      });
       return html`${cells}`;
     }
   }
@@ -218,7 +234,8 @@ export class ExampleTableElement extends MobxLitElement {
     return html` <td class="custom-per-rating-per-model-category">
       <div
         class="chart-holder"
-        style=${this.styleHolder(this.appState.examplesForMainTable[rowIndex])}>
+        style=${
+        this.styleHolder(this.appState.examplesForMainTable[rowIndex].index)}>
         <comparator-bar-chart
           .getValueDomain=${getValueDomain}
           .getGroupedDataValues=${getBarChartData}
@@ -246,7 +263,7 @@ export class ExampleTableElement extends MobxLitElement {
       'monospace': this.appState.useMonospace === true,
     });
 
-    const styleHolder = this.styleHolder(example);
+    const styleHolder = this.styleHolder(example.index);
 
     // Use text diff only when both are texts.
     const textDiff =
@@ -431,27 +448,28 @@ export class ExampleTableElement extends MobxLitElement {
       this.appState.searchFilters[FIELD_ID_FOR_RATIONALE_LIST];
 
     // prettier-ignore
-    const renderRationaleList =
-      example.rationale_list != null &&
-      (isABetter === true || isBBetter === true)
-        ? html`
+    const renderRationaleList = example.rationale_list != null &&
+            (isABetter === true || isBBetter === true) ?
+        html`
             <div class="list-holder"
-              style=${this.styleHolder(example)}>
+              style=${this.styleHolder(example.index)}>
               <ul class="rationale-list">
-                ${example.rationale_list.map((item: RationaleListItem) =>
-                  html`
+                ${
+            example.rationale_list.map(
+                (item: RationaleListItem) => html`
                     <li class=${styleRationaleItem(item)}
-                      @mouseenter=${() =>
-                          void handleMouseenterRationaleItem(item)}
+                      @mouseenter=${
+                    () => void handleMouseenterRationaleItem(item)}
                       @mouseleave=${handleMouseleaveRationaleItem}>
-                      ${searchQueryForRationaleList == null
-                        ? item.rationale
-                        : renderSearchedString(
+                      ${
+                    searchQueryForRationaleList == null ?
+                        item.rationale :
+                        renderSearchedString(
                             item.rationale, searchQueryForRationaleList)}
                     </li>`)}
               </ul>
-            </div>`
-        : '';
+            </div>` :
+        '';
 
     // Tag chips.
     const renderTagChips =
@@ -527,8 +545,9 @@ export class ExampleTableElement extends MobxLitElement {
         return html`<td class=${this.styleCustomField(field)}>${content}</td>`;
       } else {
         // Per-model cases.
-        const values = example.custom_fields[field.id] as boolean[];
-        return this.renderPerModelField(values, field);
+        const values =
+            example.custom_fields[field.id] as boolean[] | string[] | number[];
+        return this.renderPerModelField(values, field, example.index);
       }
     };
 

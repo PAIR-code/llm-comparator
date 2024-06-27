@@ -138,6 +138,7 @@ export interface Example {
  * - number: Numeric value from each output (e.g., word count)
  * - category: Categorical strings (e.g., rating like "Pretty Good")
  * Reserved for required columns.
+ * - text: Long string texts.
  * - base: for index, input, outputs, tags, and score.
  */
 export enum FieldType {
@@ -151,6 +152,7 @@ export enum FieldType {
   PER_MODEL_BOOLEAN = 'per_model_boolean',
   PER_MODEL_NUMBER = 'per_model_number',
   PER_MODEL_CATEGORY = 'per_model_category',
+  PER_MODEL_TEXT = 'per_model_text',
   PER_RATING_STRING = 'per_rating_string',
   PER_RATING_PER_MODEL_CATEGORY = 'per_rating_per_model_category',
   BASE = 'base',
