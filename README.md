@@ -1,6 +1,6 @@
 # LLM Comparator
 
-LLM Comparator is a python library and interactive visualization tool for
+LLM Comparator is an interactive visualization tool with a python library, for
 analyzing side-by-side LLM evaluation results.
 It is designed to help people qualitatively analyze how
 responses from two models differ at example- and slice-levels. Users can
@@ -35,8 +35,8 @@ The tool helps you analyze *when* and *why* Gemma 1.1 is better or worse than
 
 - ***When***: The **Score Distribution** and **Metrics by Prompt Category**
 panels show that the quality of responses from Model A (Gemma 1.1) is considered
-better than that from Model B (Gemma 1.0) (larger blue area than orange;
->50% win rate), according to the LLM-based evaluation method
+better than that from Model B (Gemma 1.0) (larger blue area than orange; >50%
+win rate), according to the LLM-based evaluation method
 ([LLM-as-a-judge](https://arxiv.org/abs/2306.05685)).
 This holds true for most prompt categories (e.g., Humanities, Math).
 - ***Why***: The **Rationale Summary** panel dives into the reasons behind these
@@ -53,12 +53,14 @@ from Gemma 1.1 starts with it.
 
 ## Python Library for Creating JSON File
 
-This project provides the `llm-comparator` package on PyPI, which create JSON 
+This project provides the `llm-comparator` package on PyPI, which create JSON
 files for use with the LLM Comparator visualization. This package can create the
-entire JSON file, including side-by-side analysis, given a set of input prompts
-to run and models to run them on. Or, if a user already has prompts and an
-existing set of model outputs, it can perform just the side-by-side analysis
-steps. For more details, see the [Python library README](python/README.md).
+entire JSON file, including side-by-side LLM-based evaluation and rationale
+clusters, given a set of input prompts to run and models to run them on. Or, if
+a user already has prompts and an existing set of model outputs, it can perform
+just the rationale clustering steps. For more details, see the
+[Python library README](python/README.md).
+
 
 ## JSON Data Format
 
