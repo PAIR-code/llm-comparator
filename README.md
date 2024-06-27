@@ -1,7 +1,8 @@
 # LLM Comparator
 
-LLM Comparator is an interactive visualization tool for analyzing side-by-side
-LLM evaluation results. It is designed to help people qualitatively analyze how
+LLM Comparator is a python library and interactive visualization tool for
+analyzing side-by-side LLM evaluation results.
+It is designed to help people qualitatively analyze how
 responses from two models differ at example- and slice-levels. Users can
 interactively discover insights like *"Model A's responses are better than B's
 on email rewriting tasks because Model A tends to generate bulleted lists more
@@ -49,6 +50,15 @@ it uses bulleted lists more frequently. Also, Gemma 1.1 is less chatty.
 While there are many responses starting with "Sure" for Gemma 1.0, no response
 from Gemma 1.1 starts with it.
 
+
+## Python Library for Creating JSON File
+
+This project provides the `llm-comparator` package on PyPI, which create JSON 
+files for use with the LLM Comparator visualization. This package can create the
+entire JSON file, including side-by-side analysis, given a set of input prompts
+to run and models to run them on. Or, if a user already has prompts and an
+existing set of model outputs, it can perform just the side-by-side analysis
+steps. For more details, see the [Python library README](python/README.md).
 
 ## JSON Data Format
 
