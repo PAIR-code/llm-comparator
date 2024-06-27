@@ -90,6 +90,7 @@ def run(
               'score': judgement['score'],
               'individual_rater_scores': judgement['individual_rater_scores'],
               'rationale_list': similarity,
+              'custom_fields': {},
           }
           for input, judgement, similarity in per_example_generator
       ],

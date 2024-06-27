@@ -225,7 +225,7 @@ class RationaleClusterGenerator:
   def run(
       self,
       rationale_bullets_for_examples: Sequence[Sequence[str]],
-      num_clusters: int = 10,
+      num_clusters: int = 8,
   ) -> tuple[
       Sequence[_RationaleCluster],
       Sequence[Sequence[_RationaleBulletWithClusterSimilarity]],
