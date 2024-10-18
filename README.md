@@ -89,10 +89,10 @@ All the fields presented below are required.
 
 ```
 {
-    "metadata": [
+    "metadata": {
         "source_path": "Any string for your records (e.g., run id)",
         "custom_fields_schema": []
-    ],
+    },
     "models": [
         {"name": "Short name of your first model"},
         {"name": "Short name of your second model"}
