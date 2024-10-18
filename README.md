@@ -248,8 +248,24 @@ npm run serve
 
 ## Citing LLM Comparator
 
-If you use LLM Comparator as part of your work, please cite our research paper
-at https://arxiv.org/abs/2402.10524.
+If you use or refer to LLM Comparator in your work, please cite our research
+paper presented at IEEE VIS 2024, [published in IEEE TVCG](https://doi.org/10.1109/TVCG.2024.3456354).
+
+```
+@article{kahng2025comparator,
+    title={{LLM Comparator}: Interactive Analysis of Side-by-Side Evaluation of Large Language Models},
+    author={Kahng, Minsuk and Tenney, Ian and Pushkarna, Mahima and Liu, Michael Xieyang and Wexler, James and Reif, Emily and Kallarackal, Krystal and Chang, Minsuk and Terry, Michael and Dixon, Lucas},
+    journal={IEEE Transactions on Visualization and Computer Graphics},
+    year={2025},
+    volume={31},
+    number={1},
+    publisher={IEEE},
+    doi={10.1109/TVCG.2024.3456354}
+}
+```
+
+A prelinimary version was presented at ACM CHI 2024 in the Late-Breaking Work
+track, also available on arXiv (https://arxiv.org/abs/2402.10524).
 
 ```
 @inproceedings{kahng2024comparator,
@@ -262,7 +278,6 @@ at https://arxiv.org/abs/2402.10524.
     url={https://arxiv.org/abs/2402.10524}
 }
 ```
-
 
 ## Disclaimer
 
